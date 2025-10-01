@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil Premium do Prestador</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="../CSS/perfillogista.css">
+  <!-- Ícones -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+    <h4 class="mb-0">Perfil do Prestador</h4>
+
+    <!-- Menu de configuração -->
+    <div class="dropdown">
+      <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ⚙️
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
+        <li><a class="dropdown-item" href="#">Notificações</a></li>
+        <li><a class="dropdown-item" href="#">Resumo Geral</a></li>
+        <li><a class="dropdown-item text-danger" href="#">Excluir Conta</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <span class="navbar-brand mb-0 h1 text-white">Meu Perfil</span>
+
+      <!-- Botão Configurações -->
+      <div class="dropdown">
+        <a href="#" class="text-white text-decoration-none me-2">
+          <i class="bi bi-gear-fill"></i>
+        </a>
+        
+        <ul
+          class="dropdown-menu dropdown-menu-end shadow"
+          aria-labelledby="configBtn"
+        >
+          <li><a class="dropdown-item" href="#">Notificações</a></li>
+          <li><a class="dropdown-item" href="#">Alterar senha</a></li>
+          <li><a class="dropdown-item" href="#">Informações dos serviços</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item text-danger" href="#">Excluir conta</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Fim do Cabeçalho ----------------  -->
+
+    <!-- Conteúdo -->
+    <div class="container my-5">
+      <div class="card shadow-sm p-4">
+        <h4 class="text-center text-primary mb-4">Dados Pessoais</h4>
+
+        <!-- Inicio da Imagem de Perfil ----------------  -->
+        <div class="imgperfil text-center mb-4">
+          <img
+            src="https://via.placeholder.com/120"
+            id="profileImage"
+            class="profile-pic"
+            alt="Foto de Perfil"
+          />
+          <div class="mt-2">
+            <label for="uploadImage" class="btn btn-outline-primary btn-sm"
+              >Alterar Foto</label
+            >
+            <input
+              type="file"
+              id="uploadImage"
+              class="profile-upload"
+              accept="image/*"
+            />
+          </div>
+        </div>
+        <!-- Fim da Imagem de Perfil ----------------  -->
+
+        <!-- Formulário -->
+        <form id="perfilForm">
+          <div class="mb-3">
+            <label class="form-label">Nome</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nome"
+              value="João da Silva"
+              disabled
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">E-mail</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              value="joao@email.com"
+              disabled
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Telefone</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="telefone"
+              value="(63) 99999-0000"
+              disabled
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Endereço</label>
+            <input
+              type="text"
+              class="form-control"
+              id="endereco"
+              value="Rua 16, Quadra AA, Araguaína-TO"
+              disabled
+            />
+          </div>
+          <button type="button" class="btn btn-primary w-100" id="editBtn">
+            Editar Perfil
+          </button>
+        </form>
+      </div>
+
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Seletores
+      const editBtn = document.getElementById("editBtn");
+      const inputs = document.querySelectorAll("#perfilForm input");
+      const uploadImage = document.getElementById("uploadImage");
+      const profileImage = document.getElementById("profileImage");
+
+      let editMode = false;
+
+      // Carregar dados do localStorage
+      window.onload = () => {
+        if (localStorage.getItem("perfil")) {
+          const perfil = JSON.parse(localStorage.getItem("perfil"));
+          document.getElementById("nome").value = perfil.nome;
+          document.getElementById("email").value = perfil.email;
+          document.getElementById("telefone").value = perfil.telefone;
+          document.getElementById("endereco").value = perfil.endereco;
+          if (perfil.foto) {
+            profileImage.src = perfil.foto;
+          }
+        }
+      };
+
+      // Botão editar/salvar perfil
+      editBtn.addEventListener("click", () => {
+        editMode = !editMode;
+
+        inputs.forEach((input) => {
+          input.disabled = !editMode;
+        });
+
+        if (editMode) {
+          editBtn.textContent = "Salvar Alterações";
+          editBtn.classList.remove("btn-primary");
+          editBtn.classList.add("btn-success");
+        } else {
+          editBtn.textContent = "Editar Perfil";
+          editBtn.classList.remove("btn-success");
+          editBtn.classList.add("btn-primary");
+
+          // Salvar no localStorage
+          const perfil = {
+            nome: document.getElementById("nome").value,
+            email: document.getElementById("email").value,
+            telefone: document.getElementById("telefone").value,
+            endereco: document.getElementById("endereco").value,
+            foto: profileImage.src,
+          };
+          localStorage.setItem("perfil", JSON.stringify(perfil));
+
+          alert("Perfil atualizado com sucesso!");
+        }
+      });
+
+      // Upload de imagem de perfil
+      uploadImage.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            profileImage.classList.add("fade-in"); // inicia o fade-out
+            setTimeout(() => {
+              profileImage.src = e.target.result; // troca a foto
+              profileImage.classList.remove("fade-in"); // aplica fade-in
+            }, 200);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+/*configurando da área de login*/
+.login-card{
+  background-color: #168DEE; /*cor de fundo*/
+}
+/* Início do CSS 75/25 ---------------- */
+.logo-login {
+  max-width: 120px;
+  height: auto;
+}

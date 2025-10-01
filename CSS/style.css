@@ -1,0 +1,565 @@
+.header{
+    background-color: #0FA8F4; /* cor de fundo*/
+    padding: 10px 20px; /* tamanho da área*/
+    align-items: center ; /* alinhar no centro*/
+    display: flex ;/* redimencionar*/
+    justify-content: space-between; /* colocar os espaços ao lado*/
+
+}
+
+/* Configurando a logo do site */
+.logo{
+   display: flex;
+   align-items: center;
+   color: white;
+   font-size: 18px; /*tamanho da fonte do texto*/
+   font-weight: bold;/*texto em niggan*/
+
+
+}
+
+.logo img{/* dumensões da imagem */
+   width: 90px; /* tamanho */
+   margin-right: 10px; /*margemns*/
+
+}
+
+/*configurar a barra de pesquisa*/
+
+.search-box{
+    flex: 1;
+    max-width: 600px; /*largura maxima */
+    margin: 0 20px;/*margem superios e lateral*/
+    position: relative;
+
+}
+
+.search-box input{
+    width: 100%; /*configuração na parte de dentro*/
+    padding: 10px 40px 10px 15px;/*definindo o espaço cima,direita,baixo,esquerda*/
+    border:none;/*borda*/
+    border-radius: 30px;/*expessura da borda*/
+    font-size: 16px;/*tamanho da font do texto*/
+}
+
+/*configurar icones do menu superior*/
+.icons{
+    display: flex;/*os icones ficam flexiveis a mudança de tela*/
+    gap: 15px;/*Espaço entre os icones*/
+    align-items: center;/*Centralizar os itns no meio do menu*/
+
+}
+
+.icons img{/*Configurando as imagens dos icones*/
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+
+}
+
+/* Configurações para o radapé*/
+
+.footer{
+    background-color: #06ACFF; /*cor de fundo*/
+    padding: 15px 40px 15px 40px;
+    color: white;/* cor do texto*/
+    font-family: Arial, Helvetica, sans-serif;/*Fontes dos texto*/
+}
+
+.footer-esquerdo{
+    font-weight: bold;/*colocando o texto em niggan*/
+    margin: 0;
+
+}
+
+.footer-direito{
+    text-align: right; 
+    /*texto alinhado á (direita)*/
+    margin: 0 0 8px 0;
+}
+
+.icons-sociais{
+    /* configurando a area onde fica os icones das redes sociais*/
+    display: flex;
+    gap: 20px;
+    /*distancia entre eles*/
+    justify-content: flex-end;
+}
+
+.icons-sociais img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s; /*Aniação suave ao passar o mause em cima*/ 
+}
+
+
+
+
+html, body{
+    height: 100%;/*ocupa 100% da auta da tela*/
+    margin: 0;/* remover as margens padrão*/
+    display: flex;
+    flex-direction: column;/*organiza em colunas*/
+}
+
+
+main{
+    flex: 1;/* mandar o rodapé para baixo*/
+}
+
+
+
+/* Início do CSS Cadastro ---------------- */
+
+/* ====== Ajustes da tela de cadastro ====== */
+.cadastro-card {
+  width: 900px;        /* mais largo */
+  max-width: 95%;      /* ocupa quase tudo em telas menores */
+  border-radius: 15px; /* cantos arredondados */
+}
+
+.cadastro-card .form-control {
+  width: 100%;         /* inputs ocupam toda a largura */
+  padding: 14px;       /* mais espaço interno */
+  font-size: 1.1rem;   /* texto maior */
+}
+
+.cadastro-card button {
+  padding: 14px;       /* botão mais alto */
+  font-size: 1.1rem;
+}
+
+
+
+.cadastro-card .form-control {
+  width: 100%; /* garante que os inputs ocupem toda a largura do card */
+}
+
+/* Fundo com imagem (pode trocar a URL abaixo pela que você quiser) */
+.bg-overlay {
+  background-color: #06ACFF;
+  position: relative;
+}
+
+.bg-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Card de cadastro (agora maior) */
+.cadastro-card {
+  position: relative;
+  max-width: 600px; /* aumentei a largura */
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+/* Botão cadastrar */
+.btn-primary {
+  background-color: #6c2bd9;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #5a21b8;
+}
+
+/* Labels pretas */
+.text-dark {
+  font-weight: 600;
+  color: #000 !important;
+}
+
+/* Fim do CSS Cadastro ---------------- */
+
+/* Início do CSS 75/25 ---------------- */
+.logo-login {
+  max-width: 120px;
+  height: auto;
+}
+/* Fim do CSS 75/25 ---------------- */
+
+
+
+/* Início do CSS Detalhes Serviço ---------------- */
+
+.funcionario-detalhe-img {
+  max-width: 280px;
+  border-radius: 10px;
+}
+
+/* Botão verde claro */
+#btn-pedir-servico {
+  background-color: #28a745; /* verde padrão */
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+#btn-pedir-servico:hover {
+  background-color: #1e7e34; /* verde escuro */
+/* Avaliações */
+}
+.list-group-item {
+  font-size: 0.95rem;
+}
+
+/* Fim do CSS Detalhes Serviço ---------------- */
+
+
+/* Início do CSS Tela de Pagamento ---------------- */
+.payment-card {
+  max-width: 400px;
+  border-radius: 15px;
+  background-color: #f8f9fa;
+}
+
+.scan-icon {
+  font-size: 120px;
+  color: #000;
+}
+
+.payment-card .btn {
+  width: 100px;
+  font-size: 14px;
+}
+/* Fim do CSS Tela de Pagamento ---------------- */
+
+/* Início do CSS Home do Lojista ---------------- */
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+table td, table th {
+  vertical-align: middle;
+}
+
+/* Fim do CSS Home do Lojista ---------------- */
+
+
+.pgt:hover
+{
+  background-color: #bcbcbd;
+}
+
+.btn-mudarend{
+  background-color: #0FA8F4;
+}
+.btn-mudarend:hover{
+  background-color: #1b4053;
+  color: white;
+}
+
+.TXT-PGT{
+  color: #06ACFF;
+}
+/* Cartões clicáveis */
+.payment-option, .address-option {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.payment-option:hover, .address-option:hover {
+  background-color: #f8f9fa;
+}
+.payment-option.selected, .address-option.selected {
+  border: 2px solid #007bff;
+  background-color: #eef5ff;
+}
+
+/* Navbar */
+.navbar {
+  padding: 12px;
+}
+.nav-link {
+  margin-right: 15px;
+  font-weight: 500;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Navbar */
+.navbar {
+  padding: 12px;
+}
+.nav-link {
+  margin-right: 15px;
+  font-weight: 500;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+  padding: 12px;
+}
+.nav-link {
+  margin-right: 15px;
+  font-weight: 500;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Cards de serviços */
+.service-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Botões "Chamar" */
+.btn-dark {
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 6px 20px;
+}
+.btn-dark:hover {
+  background-color: #333;
+}
+
+/*tela perfil */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  height: 60px;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.btn {
+  border-radius: 8px;
+}
+
+#configBtn {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  height: 60px;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.btn {
+  border-radius: 8px;
+}
+
+#configBtn {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+}
+/*tela d perfil*/
+/* Inicio da Imagem de Perfil ----------------  */
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;      /* ajusta a imagem sem distorcer */
+  border-radius: 50%;     /* deixa circular */
+  border: 3px solid #0d6efd; /* borda azul padrão bootstrap */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efeito hover na foto */
+.profile-pic:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(13, 110, 253, 0.5);
+  cursor: pointer;
+}
+
+.profile-upload {
+  display: none; /* esconde o input de arquivo */
+}
+
+/* Inicio da Animação de Troca de Imagem ----------------  */
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #0d6efd;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.profile-pic.fade-in {
+  opacity: 0;
+}
+/* Fim da Animação de Troca de Imagem ----------------  */
+
+/* Inicio do Efeito Flash na Foto ----------------  */
+@keyframes flash-effect {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.profile-pic.flash {
+  animation: flash-effect 0.6s ease-in-out;
+}
+/* Fim do Efeito Flash na Foto ----------------  */
+
+/* Inicio da Animação do Dropdown ----------------  */
+.dropdown-menu {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.25s ease-in-out;
+  display: block;   /* importante para o efeito funcionar */
+  visibility: hidden;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+/* Fim da Animação do Dropdown ----------------  */
+
+
+
+
+/* Fim da Imagem de Perfil ----------------  */
+
+ /* ===========================
+   Estilos gerais
+=========================== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* ===========================
+   Cards
+=========================== */
+.card {
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.05);
+}
+
+/* ===========================
+   Formulários
+=========================== */
+form .form-label {
+  font-weight: 500;
+}
+
+form .form-control {
+  border-radius: 0.5rem;
+}
+
+form .btn {
+  min-width: 100px;
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Botões por tipo de ação */
+.btn-primary {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-primary:hover {
+  background-color: #157347;
+  border-color: #157347;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #5c636a;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #bb2d3b;
+}
+
+/* ===========================
+   Tabelas
+=========================== */
+table.table {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+table.table th {
+  background-color: #e9ecef;
+  font-weight: 600;
+}
+
+table.table td, table.table th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+table.table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* ===========================
+   Títulos de seção
+=========================== */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* ===========================
+   Responsividade extra
+=========================== */
+@media (max-width: 576px) {
+  form .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}

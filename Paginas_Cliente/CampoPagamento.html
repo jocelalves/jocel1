@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tela de Pagamento</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <!-- Ícones -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-light">
+    <!-- Início do Menu Superior ---------------- -->
+    <nav class="navbar navbar-light bg-primary p-3">
+      <div class="container-fluid d-flex align-items-center">
+        <button class="btn btn-light me-3" onclick="history.back()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <span class="navbar-brand mb-0 h1 text-white mx-auto"
+          >Campo de pagamento</span
+        >
+      </div>
+    </nav>
+    <!-- Fim do Menu Superior ---------------- -->
+
+    <div class="container my-4">
+      <!-- Área 1: Formas de Pagamento -->
+      <h5 class="mb-3">Formas de Pagamento</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="card text-center p-3 payment-option" data-option="pix">
+            <i class="bi bi-qr-code fs-1"></i>
+            <p class="fw-bold mt-2">PIX</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div
+            class="card text-center p-3 payment-option"
+            data-option="credito"
+          >
+            <i class="bi bi-credit-card fs-1"></i>
+            <p class="fw-bold mt-2">Crédito</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="card text-center p-3 payment-option" data-option="boleto">
+            <i class="bi bi-receipt fs-1"></i>
+            <p class="fw-bold mt-2">Boleto</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIX -->
+      <div class="collapse mb-4" id="pagamentoPix">
+        <div class="card card-body">
+          <p class="fw-bold">Código PIX:</p>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="codigoPix"
+              value="00020126580014BR.GOV.BCB.PIX0136b6b3d6e8-bfae-4e64-b92d-0e1f123456782540123.455802BR5920João da Silva6009Sao Paulo62070503***6304ABCD"
+              readonly
+            />
+            <button
+              class="btn btn-outline-primary"
+              onclick="copiarCodigo('codigoPix')"
+            >
+              <i class="bi bi-clipboard"></i> Copiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crédito -->
+      <div class="collapse mb-4" id="pagamentoCredito">
+        <div class="card card-body">
+          <form>
+            <div class="mb-3">
+              <label for="numeroCartao" class="form-label"
+                >Número do Cartão</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="numeroCartao"
+                placeholder="0000 0000 0000 0000"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="nomeCartao" class="form-label"
+                >Nome Impresso no Cartão</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nomeCartao"
+                placeholder="Nome completo"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="validade" class="form-label">Validade</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validade"
+                  placeholder="MM/AA"
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="cvv"
+                  placeholder="123"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              Salvar Cartão
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Boleto -->
+      <div class="collapse mb-4" id="pagamentoBoleto">
+        <div class="card card-body">
+          <p class="fw-bold">Código de Barras:</p>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="codigoBoleto"
+              value="34191.79001 01043.510047 91020.150008 7 87670000032000"
+              readonly
+            />
+            <button
+              class="btn btn-outline-primary"
+              onclick="copiarCodigo('codigoBoleto')"
+            >
+              <i class="bi bi-clipboard"></i> Copiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Área 2: Endereço -->
+      <h5 class="mb-3">Endereço de Entrega</h5>
+      <div class="card p-3 mb-3 address-option selected">
+        <p class="mb-1 fw-bold">Rua 16, Quadra AA</p>
+        <p class="mb-1">Lote 03</p>
+        <p class="mb-1">Setor Juraci</p>
+        <p class="mb-0">Araguaína-TO / 77656-423</p>
+      </div>
+
+      <!-- Botão e Formulário Novo Endereço -->
+      <button
+        class="btn btn-outline-primary mb-3"
+        data-bs-toggle="collapse"
+        data-bs-target="#novoEndereco"
+      >
+        <i class="bi bi-geo-alt"></i> Novo endereço
+      </button>
+
+      <div class="collapse mb-4" id="novoEndereco">
+        <div class="card card-body">
+          <form>
+            <div class="mb-3">
+              <label for="cep" class="form-label">CEP</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cep"
+                placeholder="Digite o CEP"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="rua" class="form-label">Rua</label>
+              <input
+                type="text"
+                class="form-control"
+                id="rua"
+                placeholder="Digite a rua"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="numero" class="form-label">Número</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="numero"
+                  placeholder="Digite o número"
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="complemento" class="form-label">Complemento</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="complemento"
+                  placeholder="Ex: Apto 101"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="cidade" class="form-label">Cidade</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cidade"
+                placeholder="Digite a cidade"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              Salvar Endereço
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Área 3: Finalizar compra -->
+      <div class="text-center">
+        <button class="btn btn-success btn-lg w-100">Finalizar Compra</button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Seleção de opções de pagamento
+      document.querySelectorAll(".payment-option").forEach((option) => {
+        option.addEventListener("click", function () {
+          document
+            .querySelectorAll(".payment-option")
+            .forEach((el) => el.classList.remove("selected"));
+          this.classList.add("selected");
+          document
+            .querySelectorAll(".collapse")
+            .forEach((c) =>
+              new bootstrap.Collapse(c, { toggle: false }).hide()
+            );
+          let target = this.getAttribute("data-option");
+          if (target === "pix")
+            new bootstrap.Collapse(
+              document.getElementById("pagamentoPix")
+            ).show();
+          if (target === "credito")
+            new bootstrap.Collapse(
+              document.getElementById("pagamentoCredito")
+            ).show();
+          if (target === "boleto")
+            new bootstrap.Collapse(
+              document.getElementById("pagamentoBoleto")
+            ).show();
+        });
+      });
+
+      // Seleção de endereço
+      document.querySelectorAll(".address-option").forEach((addr) => {
+        addr.addEventListener("click", function () {
+          document
+            .querySelectorAll(".address-option")
+            .forEach((el) => el.classList.remove("selected"));
+          this.classList.add("selected");
+        });
+      });
+
+      // Copiar código
+      function copiarCodigo(id) {
+        const input = document.getElementById(id);
+        input.select();
+        input.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(input.value);
+        alert("Código copiado!");
+      }
+    </script>
+  </body>
+</html>

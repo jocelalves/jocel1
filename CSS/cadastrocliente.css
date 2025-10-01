@@ -1,0 +1,93 @@
+/* ====== Tela de Cadastro (responsiva) ====== */
+
+/* Fundo com overlay */
+.bg-overlay {
+  background-color: #06ACFF;      /* pode trocar por imagem se quiser */
+  position: relative;
+  min-height: 100dvh;             /* melhor que vh-100 em mobile */
+  padding: 2rem 1rem;             /* respiro nas laterais em telas pequenas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Card */
+.cadastro-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;                /* largura máxima do formulário */
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.97);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Inputs — não force width:100% para não quebrar input-group */
+.cadastro-card .form-control {
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.cadastro-card .form-control:focus {
+  border-color: #6c2bd9;
+  box-shadow: 0 0 8px rgba(108, 43, 217, 0.35);
+}
+
+/* Garanta que input + botão do input-group fiquem na MESMA linha */
+.input-group > .form-control {
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+.input-group .btn {
+  border-radius: 0 10px 10px 0;   /* opcional, só para combinar com os inputs */
+}
+
+/* Labels */
+.text-dark {
+  font-weight: 600;
+  color: #000 !important;
+}
+
+/* Botões */
+.btn-primary {
+  background-color: #6c2bd9;
+  border: none;
+  font-weight: bold;
+  font-size: 1.05rem;
+  padding: 0.9rem;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn-primary:hover { background-color: #5a21b8; transform: translateY(-2px); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-outline-dark {
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.btn-outline-dark:hover { background-color: #333; color: #fff; }
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .bg-overlay {
+    align-items: flex-start;       /* evita “corte” do topo em telas muito baixas */
+    padding: 1.25rem .75rem;
+  }
+  .cadastro-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+}
