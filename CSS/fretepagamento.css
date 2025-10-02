@@ -2,7 +2,7 @@
 .table td, .table th { vertical-align: middle; }
 
 .header {
-    background-color: #7b1fa2;
+    background-color: #168DEE;
     /* cor de fundo*/
     padding: 10px 20px;
     /*tamanho da área*/
@@ -15,7 +15,7 @@
     /*colocar os espaços ao lado*/
 }
 .footer {
-    background-color: #cba3c9;
+    background-color: #77bcf4;
     /*cor de fundo*/
     padding: 15px 40px 15px 40px;
     /*dimensão*/
@@ -29,7 +29,7 @@
 /* Links do menu ao passar o mouse */
 .navbar .nav-link:hover { opacity: 0.9; }
 .navbar{
-    background-color: #7b139e;
+    background-color: #168DEE;
 }
 
 /* Ajustes responsivos leves */

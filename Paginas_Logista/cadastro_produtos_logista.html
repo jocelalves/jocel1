@@ -14,7 +14,7 @@
   <!-- 1) Menu de navegação -->
   <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">PetAmigo</a>
+      <a class="navbar-brand fw-bold" href="#">ArrumaJá</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -38,17 +38,17 @@
     <section id="categorias" class="mb-4">
       <div class="card shadow-sm">
         <div class="card-header bg-white">
-          <h5 class="m-0">Cadastro de Categorias</h5>
+          <h5 class="m-0">Cadastro dos serviços</h5>
         </div>
         <div class="card-body">
 
-          <form action="" method="" class="row g-3">
+          <form  method="post" class="row g-3" action="../php/cadastrar_servisos.php">
             <div class="col-md-6">
-              <label for="catNome" class="form-label">Nome da categoria</label>
-              <input type="text" name="nomecategoria" class="form-control" id="catNome" placeholder="Ex.: Eletrônicos" />
+              <label for="catNome" class="form-label">Tipo de serviço </label>
+              <input type="text" name="nomecategoria" class="form-control" id="catNome" placeholder="Ex.: Parte elétrica" />
             </div>
             <div class="col-md-6">
-               <label for="pPreco" class="form-label">Desconto em toda categoria</label>
+               <label for="pPreco" class="form-label">Desconto em todo serviço</label>
               <input name="desconto" type="number" id="catDesconto" class="form-control" min="0" step="0.01" placeholder="0,00" />
             </div>
             <div class="col-12 d-flex gap-2">
@@ -58,12 +58,12 @@
             </div>
 
             <div class="col-12 col-md-6">
-              <label for="catLista" class="form-label">Categorias criadas</label>
+              <label for="catLista" class="form-label">Categorias dos serviços criados</label>
               <select id="catLista" class="form-select">
-                <option selected>Selecione uma categoria...</option>
-                <option>Brinquedos</option>
-                <option>Ração</option>
-                <option>Remédios</option>
+                <option selected>Selecione um serviço...</option>
+                <option>Troca de tomadas</option>
+                <option>Instalação de luminárias</option>
+                <option>ventiladores de teto</option>
               </select>
             </div>
           </form>
@@ -71,83 +71,7 @@
       </div>
     </section>
 
-    <!-- 3) Marcas -->
-    <section id="marcas" class="mb-4">
-      <div class="card shadow-sm">
-        <div class="card-header bg-white">
-          <h5 class="m-0">Cadastro de Marcas</h5>
-        </div>
-        <div class="card-body">
-
-          <form class="row g-3" action="" method="post" enctype="multipart/form-data">
-            <div class="col-12 col-md-3 text-center">
-              <div class="brand-thumb border rounded d-flex align-items-center justify-content-center overflow-hidden">
-                <img id="brandPreview" alt="Prévia da marca" class="img-fluid d-none" />
-                <span id="brandPlaceholder" class="text-muted">Prévia da imagem</span>
-              </div>
-              <label for="brandImg" class="form-label mt-2">Imagem da marca</label>
-              <input class="form-control" name="imagemmarca" type="file" id="brandImg" accept="image/*" />
-            </div>
-
-            <div class="col-12 col-md-9">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="brandNome" class="form-label">Nome da marca</label>
-                  <input type="text" name="nomemarca" id="brandNome" class="form-control" placeholder="Ex.: TechPro" />
-                </div>
-                <div class="col-12 d-flex gap-2">
-                  <button type="submit" class="btn btn-primary">Cadastrar</button>
-                  <button type="submit" class="btn btn-outline-secondary">Editar</button>
-                  <button type="submit" class="btn btn-outline-danger">Excluir</button>
-                </div>
-
-                <div class="col-12">
-                  <label class="form-label">Marcas cadastradas</label>
-                  <div class="table-responsive">
-                    <table class="table align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th style="width: 72px;">Logo</th>
-                          <th>Nome</th>
-                          <th class="text-end">Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><div class="logo-sample rounded"></div></td>
-                          <td>TechPro</td>
-                          <td class="text-end">
-                            <button class="btn btn-sm btn-outline-secondary">Editar</button>
-                            <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><div class="logo-sample rounded"></div></td>
-                          <td>GigaMax</td>
-                          <td class="text-end">
-                            <button class="btn btn-sm btn-outline-secondary">Editar</button>
-                            <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><div class="logo-sample rounded"></div></td>
-                          <td>Mobix</td>
-                          <td class="text-end">
-                            <button class="btn btn-sm btn-outline-secondary">Editar</button>
-                            <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
+    
 
     <!-- 4) Produtos -->
     <section id="produtos" class="mb-5">

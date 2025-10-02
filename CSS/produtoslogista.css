@@ -28,7 +28,7 @@ main .card {
 /* Links do menu ao passar o mouse */
 .navbar .nav-link:hover { opacity: 0.9; }
 .navbar{
-    background-color: #7b139e;
+    background-color: #1b2fe2;
 }
 
 /* Ajustes responsivos leves */
