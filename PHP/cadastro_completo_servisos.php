@@ -128,6 +128,41 @@ try{
    }
 
    $inserirImagens= $stmImagens->execute();
+
+   if(!$inserirImagens){
+    redirecWith("../paginas_logista/cadastro_produtos_logista.html",
+           ["erro"=> "Metodo inválido"]);
+   }
+
+
+     $idImg=(int)$pdo->lastInsertId();
+   // vincular imahem com serviço
+
+    $sqlVincularServicosImg = "INSERT INTO Servicos_has_Imagens_produtos 
+    (Servicos_idServicos,Imagem_produtos, Imagem_produtos_idImagem_produtos)
+    Values 
+    (:idSer, :idimg)";
+
+    $stmVincularServicosImg = $pdo->prepare($sqlVincularServicosImg);
+
+    $inserirVincularServicosImg = $stmVincularServicosImg->execute([
+      ":idSer"=> $idServicos,
+      ":idimg"=> $idImg
+    ]);
+
+    if(!$inserirVincularServicosImg){
+      $pdo->rollBack();
+      redirecWith("../paginas_logista/cadastro_produtos_logista.html",
+      ["Erro"=> "Falha ao vincular produto com imagem."]);
+    }
+
+  } catch(Exception $e){
+  redirecWith("../paginas_logista/cadastro_produtos_logista.html",
+      ["erro" => "Erro no banco de dados: "
+      .$e->getMessage()]);
+}
+
+   
    
 
 
