@@ -35,10 +35,9 @@ try{
 
     // criar as váriaveis
     $nome = $_POST["nome"];
-    $Duracao = $_POST["Duracao"];
-    $preco_servico = $_POST["preco_servico"];
-    $detalhes_adicionais = $_POST["detalhes_adicionais"];
-    $desconto = $_POST["desconto"];
+    $descricao = $_POST["descricao"];
+    $preco_servico = (double)$_POST["preco_servico"];
+    $desconto = (DOUBLE)$_POST["desconto"];
     $categoria = $_POST["categoria"];
     $prestador_responsavel = $_POST["prestador responsavel"];
 
@@ -48,9 +47,11 @@ try{
     $img2   = readImageToBlob($_FILES["imgproduto2"] ?? null);
     $img3   = readImageToBlob($_FILES["imgproduto3"] ?? null);
 
+    
+
     // VALIDANDO OS CAMPOS
   $erros_validacao = [];
-  if ($nome === "" || $preco_servico === 0 || $categoria ==="" || $prestador_responsavel ==="" ) {
+  if ($nome === "" || $preco_servico <= 0 || $categoria ==="" || $prestador_responsavel ==="" || $preco_servico <=0 || $descricao === "") {
     $erros_validacao[] = "Preencha o nome da marca.";
   }
   // se houver erros, volta para a tela com a mensagem
@@ -63,7 +64,99 @@ try{
   $pdo ->beginTransaction();
 
   // COMANDO DE ISERIR DENTRO DA TABELA PRODUTOS
-  $sqlServicos =
+  $sqlServicos = "INSERT INTO servicos(nome, descriacao,preco_servico,desconto,categoria,prestador_responsavel)
+   VALUES (:nome,:descricao,:preco_servico,:desconto,:categorias,:prestador_responsavel)";
+
+   $stmServicos = $pdo -> prepare($sqlServicos);
+  
+   $inserirServicos= $stmServicos -> execute([
+   ":nome"=>$nome;
+   ":descricao"=>$descricao;
+   ":preco_servico"=>$preco_servicos;
+   ":desconto"=>$desconto;
+   ":categoria"=>$categoria;
+   ":prestador_responsavel"=>$prestador_responsavel;
+     
+]);
+
+  if ($inserirServicos) {
+    $pdo ->rollBack();
+    redirecWith("../paginas_logista/cadastro_produtos_logista.html",
+    [ "Erro" =>"Falha ao cadastrar produtos"]);
+  }
+
+
+  $idServico=(int)$pdo->lastInsertId();
+
+  // inserir imagens
+  $sqlImagens = "INSERT INTO Imagem_Produtos (foto)
+  values (:imagem1),(:imagem2),(imagem3)";
+
+  $stmImagens=$pdo -> prepare($sqlImagens);
+
+  $InserirImagens= $stmImagens -> execute([
+    ":imagem1"=> $img1,
+    ":imagem2"=> $img2,
+    ":imagem3"=> $img3,
+  ]);
+   //preparando o comando SQL para ser executado
+  $stmImagens = $pdo -> prepare($sqlImagens);
+
+   // Bind como log quando houver conteudo; se null, o pdo envia null corretamente.
+   if ($img1!== null){
+    $stmImagens -> bindParam (' :$img1', $img1, PDO::PARAM_LOB);
+
+   }else{
+    $stmImagens->BindValue('', $img1, null, PDO::PARAM_NULL);
+   }
+
+
+   if ($img2!== null){
+    $stmImagens -> bindParam (' :$img2', $img2, PDO::PARAM_LOB);
+
+   }else{
+    $stmImagens->BindValue('', $img2, null, PDO::PARAM_NULL);
+   }
+
+
+
+   if ($img3!== null){
+    $stmImagens -> bindParam (' :$img3', $img3, PDO::PARAM_LOB);
+
+   }else{
+    $stmImagens->BindValue('', $img3, null, PDO::PARAM_NULL);
+   }
+
+   $inserirImagens= $stmImagens->execute();
+   
+
+
+
+
+  // verirficar se o inserir imagens deu errado
+
+  if ($inserirImagens) {
+    $pdo ->rollBack();
+    redirecWith("../paginas_logista/cadastro_produtos_logista.html",
+    [ "Erro"=> "falha ao cadastrar imagens"]);
+  }
+
+  //caso tenha dado certo, capture o id da imagem cadastrada
+  $idImg = (int) $pdo->lastInsertId();
+
+
+  // vincular a imagem com o serviço
+  $sqlVincularServicosImg = " INSERT INTO Servicos_has_Imagem_produtos
+  (Servicos_idServicos,Imagem_produtos_idImagem_produtos) Values 
+  (:idpro,idimg)";
+
+
+  $stmVincularServicosImg= $pdo -> prepare("$sqlVincularServicosImg");
+  
+  
+
+
+
    
 
 
