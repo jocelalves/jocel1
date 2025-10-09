@@ -10,8 +10,58 @@ function redirectWith(string $url, array $params = []): void {
   }
   header("Location: $url");
   exit;
+ }
+
+
+
+try {
+    if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
+
+        // comando de listagem de dados
+        $sqllistar = "SELECT * FROM Categorias_Servicos ORDER BY nome";
+        $stmlistar = $pdo->query($sqllistar);
+
+        // executa e captura os dados retornados e guarda em $lista
+        $lista = $stmlistar->fetchAll(PDO::FETCH_ASSOC);
+
+        // verificação de formato
+        $formato = isset($_GET["format"]) ? strtoupper($_GET["format"]) : "OPTION";
+
+        // se o formato for JSON, retorna os dados em JSON
+        if ($formato === "JSON") {
+            header("Content-Type: application/json; charset=utf-8");
+            echo json_encode(["ok" => true, "categorias" => $lista], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        // retorno padrão (HTML)
+        header("Content-Type: application/json; charset=utf-8");
+        foreach ($lista as $item) {
+            $id = (int)$item["idCategorias_Servicos"];
+            $nomecat = htmlspecialchars($item["nome"], ENT_QUOTES, "UTF-8");
+            echo "<option value=\"{$id}\">{$nomecat}</option>\n";
+        }
+        exit;
+    }
+}catch (Throwable $e) {
+    // Em caso de erro na listagem
+    if (isset($_GET['format']) && strtolower($_GET['format']) === 'json') {
+        header('Content-Type: application/json; charset=utf-8', true, 500);
+        echo json_encode(['ok' => false, 'error' => 'Erro ao listar categorias', 
+                          'detail' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+    } else {
+        header('Content-Type: text/html; charset=utf-8', true, 500);
+        echo "<option disabled>Erro ao carregar categorias</option>";
+    }
+    exit;
 }
 
+
+
+   
+
+
+// codigo de cadastro
 try {
   // Verifica método de envio
   if ($_SERVER["REQUEST_METHOD"] !== "POST") {
