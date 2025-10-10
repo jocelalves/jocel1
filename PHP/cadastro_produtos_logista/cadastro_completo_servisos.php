@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . "/conexao.php";
+// Caminho absoluto para a conexão com o banco
+require_once __DIR__ . '/../conexao.php'; // sobe um nível e acessa conexao.php
 
 /* Função para redirecionar com parâmetros */
 function redirectWith(string $url, array $params = []): void {

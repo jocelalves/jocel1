@@ -4,11 +4,11 @@
 
 (async() =>{
     // selecionando o elemento html da tela de cadastro de produtos
-  const selec = document.querySelector("#srvCategoria");
+  const selec = document.querySelector("#svCategoria");
 
   try{
     // criando a váriavel que guardar os dados vindo do php
-const r= await fetch("../PHP/cadastrar_categorias.php?listar=1");
+const r= await fetch("../PHP/cadastro_produtos_logista/cadastrar_categorias.php?listar=1");
 // se o retorno do php vinher falso, significa que não foi possivel listar dados.
     if (!r.ok) throw new Erro("Falha ao lista categorias!");
 

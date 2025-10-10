@@ -45,7 +45,7 @@
         <h5 class="m-0">Cadastro de Categorias de Serviços</h5>
       </div>
       <div class="card-body">
-        <form method="post" action="../php/cadastrar_categorias.php" class="row g-3">
+        <form method="post" action="../php/cadastro_produtos_logista/cadastrar_categorias.php" class="row g-3">
 
           <div class="col-md-6">
             <label for="catNome" class="form-label">Nome da Categoria</label>
@@ -57,11 +57,59 @@
             <input type="number" name="desconto" id="catDesconto" class="form-control" min="0" step="0.01" placeholder="0,00">
           </div>
 
+          <div class="col-md-6">
+            <label for="srvCategoria" class="form-label">Categoria</label>
+            <select name="categoria" id="svCategoria" class="form-select" >
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+
           <div class="col-12 d-flex gap-2">
             <button type="submit" class="btn btn-primary">Cadastrar</button>
             <button type="button" class="btn btn-outline-secondary">Editar</button>
             <button type="button" class="btn btn-outline-danger">Excluir</button>
           </div>
+
+          <!-- Modal Editar -->
+  <div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-warning-subtle">
+          <h5 class="modal-title">Editar Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja editar esta categoria?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-warning" id="confirmEditar">Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+          <!-- Modal Excluir -->
+  <div class="modal fade" id="modalExcluir" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger-subtle">
+          <h5 class="modal-title">Excluir Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir esta categoria?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmExcluir">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
         </form>
       </div>
@@ -78,7 +126,7 @@
       </div>
       <div class="card-body">
 
-        <form action="../php/cadastro_completo_servisos.php" method="post" class="row g-3" enctype="multipart/form-data">
+        <form action="../php/cadastro_produtos_logista/cadastro_completo_servisos.php" method="post" class="row g-3" enctype="multipart/form-data">
 
           <!-- Nome e Preço -->
           <div class="col-md-6">
@@ -154,6 +202,8 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+<script src="../JS/cadastro_produtos_logista.js"></script>
+<script src="../js/categorias.js"></script>
 
 </body>
 </html>

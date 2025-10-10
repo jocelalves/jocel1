@@ -1,5 +1,6 @@
 <?php
-  require_once __DIR__ . "/conexao.php";
+ // Caminho absoluto para a conexão com o banco
+require_once __DIR__ . '/../conexao.php'; // sobe um nível e acessa conexao.php
 
 function redirecWith($url, $params = []) {
     if (!empty($params)) {
