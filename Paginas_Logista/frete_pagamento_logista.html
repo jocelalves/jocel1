@@ -13,27 +13,26 @@
 
 <body>
 
-  <!-- 1) Menu de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">ArrumaJá</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
-        aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">ArrumaJá</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
+            aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse" id="topNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
-          <li class="nav-item"><a class="nav-link" href="#produtos">Produtos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#promocoes">Promoções</a></li>
-          <li class="nav-item"><a class="nav-link active" href="/PAGINAS/frete_pagamento.html">Pagamentos e Fretes</a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="#conversas">Conversas</a></li>
-
-        </ul>
-      </div>
+    <div class="collapse navbar-collapse" id="topNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="home_lojista.html">Relatórios</a></li>
+        <li class="nav-item"><a class="nav-link active" href="cadastro_produtos_logista.html">Serviços</a></li>
+        <li class="nav-item"><a class="nav-link" href="promocoes_logista.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link" href="frete_pagamento_logista.html">Pagamentos e Fretes</a></li>
+        <li class="nav-item"><a class="nav-link" href="chat_logista.html">Conversas</a></li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
   <main class="container my-4">
 
@@ -46,7 +45,7 @@
         <div class="card-body">
 
 
-          <form action="../php/frete_pagamento_logista/pagamento/cadastro_formas_pagamento.php" method="post" class="row g-3">
+          <form action="../php/formas_pagamento.php" method="post" class="row g-3">
             <div class="col-md-6 col-lg-4">
               <label for="fpNome" class="form-label">Nome</label>
               <input type="text" id="fpNome" name="nomepagamento" class="form-control"
@@ -70,10 +69,8 @@
                   <th class="text-end" style="width:160px">Ações</th>
                 </tr>
               </thead>
-              <tbody id="formasTableBody"></tbody>
-              <tbody>
-
-              </tbody>
+              <tbody id="FormasJaCadas"></tbody>
+              
             </table>
           </div>
 
@@ -90,7 +87,7 @@
         <div class="card-body">
 
 
-          <form action="../PHP/frete_pagamento_logista/frete/cadastro_frete.php" method="post" class="row g-3">
+          <form action="../PHP/cadastro_frete.php" method="post" class="row g-3">
             <div class="col-md-4">
               <label for="frBairro" class="form-label">Bairro</label>
               <input type="text" id="frBairro" name="bairro" class="form-control" placeholder="Ex.: Centro" required />
@@ -128,7 +125,7 @@
                   <th class="text-end" style="width:160px">Ações</th>
                 </tr>
               </thead>
-             <tbody id="freteTableBody"></tbody>
+             <tbody id="freteTabela"></tbody>
             </table>
           </div>
 
@@ -150,17 +147,18 @@
       © <span id="year"></span> Minha Loja — Painel Administrativo
     </div>
   </footer>
-
+  
   <!-- Bootstrap bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+    
+    <!-- JS simples para ano do rodapé -->
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      </script>
+  <script src="../JS/Frete_Pagamento_logista.js"></script>
 
-  <!-- JS simples para ano do rodapé -->
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script src="../JS/pagamento_frete_logista.js"></script>
 </body>
 
 </html>

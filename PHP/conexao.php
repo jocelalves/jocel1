@@ -12,7 +12,7 @@ try{
     // verificado se deu certo ou não
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // imprimindo mensagem caso tenha dado certo
-    echo "Conexão bem-sucedida!"; //(opicional para teste)
+  
     
 } catch(Exception $e){
    // caso dê erro, ele executa o catch e imprime a mensagem
