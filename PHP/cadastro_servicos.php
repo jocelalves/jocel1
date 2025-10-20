@@ -1,8 +1,7 @@
 <?php
-
 require_once __DIR__ . "/conexao.php";
 
-// Função para redirecionar com parâmetros
+// Redireciona com parâmetros na URL
 function redirecWith($url, $params = []) {
     if (!empty($params)) {
         $qs  = http_build_query($params);
@@ -13,7 +12,7 @@ function redirecWith($url, $params = []) {
     exit;
 }
 
-// Lê arquivo de upload como blob
+// Converte arquivo para blob
 function readImageToBlob(?array $file): ?string {
     if (!$file || !isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) return null;
     $content = file_get_contents($file['tmp_name']);
@@ -22,24 +21,26 @@ function readImageToBlob(?array $file): ?string {
 
 try {
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        redirecWith("../paginas_logista/cadastro_servicos.html", ["erro" => "Método inválido"]);
+        redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["erro" => "Método inválido"]);
     }
 
-    // Variáveis do serviço
-    $nome = trim($_POST["nomeproduto"] ?? '');
-    $descricao = trim($_POST["descricao"] ?? '');
-    $preco = (float)($_POST["preco"] ?? 0);
-    $categoria_id = (int)($_POST["categoria_id"] ?? 0); // ID da categoria do serviço
+    // Campos do formulário
+    $nome = trim($_POST["nomeservico"] ?? '');
+    $descricao = trim($_POST["descricao_servico"] ?? '');
+    $preco = filter_var($_POST["preco_servico"], FILTER_VALIDATE_FLOAT);
+    $desconto = filter_var($_POST["desconto_servico"], FILTER_VALIDATE_FLOAT) ?? 0;
+    $categoria_id = (int)($_POST["categoria_Servicos"] ?? 0);
 
     // Validação
     $erros = [];
     if ($nome === '') $erros[] = "O nome do serviço é obrigatório.";
     if ($descricao === '') $erros[] = "A descrição do serviço é obrigatória.";
-    if ($preco <= 0) $erros[] = "O preço do serviço deve ser maior que zero.";
+    if ($preco === false || $preco <= 0) $erros[] = "O preço do serviço deve ser maior que zero.";
     if ($categoria_id <= 0) $erros[] = "A categoria do serviço é obrigatória.";
+    if ($desconto < 0 || $desconto > 100) $erros[] = "O desconto deve estar entre 0 e 100.";
 
     if (!empty($erros)) {
-        redirecWith("../paginas_logista/cadastro_servicos.html", ["erro" => implode(" ", $erros)]);
+        redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["erro" => implode(" ", $erros)]);
     }
 
     // Imagens
@@ -52,19 +53,20 @@ try {
     $pdo->beginTransaction();
 
     // Inserir serviço
-    $sqlServico = "INSERT INTO Servicos (nome, descricao, preco_servico, Categorias_Servicos_idCategorias_Servicos)
-                   VALUES (:nome, :descricao, :preco, :categoria_id)";
+    $sqlServico = "INSERT INTO Servicos (nome, descricao, preco_servico, desconto, Categorias_Servicos_idCategorias_Servicos)
+                   VALUES (:nome, :descricao, :preco, :desconto, :categoria_id)";
     $stmServico = $pdo->prepare($sqlServico);
     $stmServico->execute([
         ":nome" => $nome,
         ":descricao" => $descricao,
         ":preco" => $preco,
+        ":desconto" => $desconto,
         ":categoria_id" => $categoria_id
     ]);
 
     $idServico = (int)$pdo->lastInsertId();
 
-    // Inserir imagens e vincular ao serviço
+    // Inserir imagens e vincular
     $sqlImagem = "INSERT INTO Imagem_Servicos (foto, descricao) VALUES (:foto, NULL)";
     $stmImagem = $pdo->prepare($sqlImagem);
 
@@ -74,8 +76,7 @@ try {
 
     foreach ($imagens as $img) {
         if ($img !== null) {
-            $stmImagem->bindParam(":foto", $img, PDO::PARAM_LOB);
-            $stmImagem->execute();
+            $stmImagem->execute([":foto" => $img]);
             $idImg = (int)$pdo->lastInsertId();
 
             $stmVinculo->execute([
@@ -86,11 +87,12 @@ try {
     }
 
     $pdo->commit();
-    redirecWith("../paginas_logista/cadastro_servicos.html", ["Cadastro" => "ok"]);
+    redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["sucesso" => "Serviço cadastrado com sucesso!"]);
 
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    redirecWith("../paginas_logista/cadastro_servicos.html", ["erro" => "Erro no banco de dados: " . $e->getMessage()]);
+    redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["erro" => "Erro: " . $e->getMessage()]);
 }
+?>

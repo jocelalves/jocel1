@@ -1,0 +1,12 @@
+.banner-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* mantém proporção sem distorcer */
+}
+
+.banner-thumb span {
+  font-size: 1rem;
+  color: #6c757d;
+  pointer-events: none; /* para não atrapalhar clique no input */
+}

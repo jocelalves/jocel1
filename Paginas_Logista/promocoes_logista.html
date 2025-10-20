@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,27 +11,28 @@
   <!-- Estilos da página -->
   <link rel="stylesheet" href="../css/promocoes.css" />
 </head>
+
 <body>
   <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">ArrumaJá</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
-            aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">ArrumaJá</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
+        aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="topNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
-        <li class="nav-item"><a class="nav-link" href="home_lojista.html">Relatórios</a></li>
-        <li class="nav-item"><a class="nav-link active" href="cadastro_produtos_logista.html">Serviços</a></li>
-        <li class="nav-item"><a class="nav-link" href="promocoes_logista.html">Promoções</a></li>
-        <li class="nav-item"><a class="nav-link" href="frete_pagamento_logista.html">Pagamentos e Fretes</a></li>
-        <li class="nav-item"><a class="nav-link" href="chat_logista.html">Conversas</a></li>
-      </ul>
+      <div class="collapse navbar-collapse" id="topNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="home_lojista.html">Relatórios</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cadastro_produtos_logista.html">Serviços</a></li>
+          <li class="nav-item"><a class="nav-link" href="promocoes_logista.html">Promoções</a></li>
+          <li class="nav-item"><a class="nav-link" href="frete_pagamento_logista.html">Pagamentos e Fretes</a></li>
+          <li class="nav-item"><a class="nav-link" href="chat_logista.html">Conversas</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
   <main class="container my-4">
 
@@ -47,48 +49,48 @@
           <strong>Cadastrar/Atualizar banner</strong>
         </div>
         <div class="card-body">
-          <form class="row g-3" enctype="multipart/form-data">
+          <form class="row g-3" id="formBanner" action="../PHP/banners.php" method="POST" enctype="multipart/form-data">
             <div class="col-12 col-md-4">
               <label class="form-label">Imagem do banner</label>
-              <div class="banner-thumb border rounded d-flex align-items-center justify-content-center">
-                <span class="text-muted">Prévia</span>
+              <div class="banner-thumb position-relative border rounded overflow-hidden" style="height:200px;">
+                <img id="previewBanner" src="" alt="Prévia" class="w-100 h-100 object-fit-cover" style="display:none;">
+                <span id="previewText"
+                  class="text-muted position-absolute top-50 start-50 translate-middle">Prévia</span>
               </div>
-              <input type="file" class="form-control mt-2" accept="image/*" disabled>
-              <div class="form-text">* Somente visual (HTML/CSS). Upload real via backend.</div>
+              <input type="file" class="form-control mt-2" accept="image/*" name="imgbanner" id="imgbanner">
+              <div class="form-text">* Upload real via backend.</div>
             </div>
+
 
             <div class="col-12 col-md-8">
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Data de validade</label>
-                  <input type="date" class="form-control" placeholder="AAAA-MM-DD">
+                  <input type="date" class="form-control" name="validade" required>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">Categoria (opcional)</label>
-                  <select class="form-select">
-                    <option value="">— Sem vínculo —</option>
-                    <option value="1">Acessórios</option>
-                    <option value="2">Alimentos</option>
-                    <option value="3">Higiene</option>
+                  <label for="Categoriabanner" class="form-label">Categoria</label>
+                  <select name="categoria" id="Categoriabanner" class="form-select">
+                    <option value="">Selecione...</option>
                   </select>
                 </div>
                 <div class="col-md-8">
                   <label class="form-label">Descrição</label>
-                  <input type="text" class="form-control" maxlength="45" placeholder="Texto curto do banner">
+                  <input type="text" class="form-control" maxlength="45" name="descricao" required
+                    placeholder="Texto curto do banner">
                 </div>
                 <div class="col-md-4">
                   <label class="form-label">Link</label>
-                  <input type="text" class="form-control" maxlength="45" placeholder="/promo-pets">
+                  <input type="text" class="form-control" maxlength="45" name="link" placeholder="/promo-pets">
                 </div>
               </div>
 
               <div class="d-flex gap-2 mt-3">
-                <button type="button" class="btn btn-primary" disabled>Cadastrar</button>
-                <button type="button" class="btn btn-outline-secondary" disabled>Editar</button>
-                <button type="button" class="btn btn-outline-danger" disabled>Excluir</button>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
               </div>
             </div>
           </form>
+
         </div>
 
         <!-- Lista de Banners -->
@@ -105,37 +107,7 @@
                   <th class="text-end" style="width:170px;">Ações</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><div class="mini-banner rounded"></div></td>
-                  <td>Semana do Pet</td>
-                  <td>/semana-pet</td>
-                  <td>Acessórios</td>
-                  <td>31/10/2025</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Excluir</a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><div class="mini-banner rounded"></div></td>
-                  <td>Frete Grátis Norte</td>
-                  <td>/frete-norte</td>
-                  <td>—</td>
-                  <td>15/11/2025</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Excluir</a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr><td colspan="6" class="small text-muted">* Lista estática (HTML). Integração posterior.</td></tr>
-              </tfoot>
+              <tbody id="tabelaBanners"></tbody>
             </table>
           </div>
         </div>
@@ -146,7 +118,6 @@
     <section class="mb-5" aria-labelledby="titulo-cupom">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
         <h4 id="titulo-cupom" class="section-title m-0">Cupons</h4>
-        <span class="text-muted small">Tabela: <code>Cupom</code></span>
       </div>
 
       <div class="card shadow-sm">
@@ -154,38 +125,42 @@
           <strong>Cadastrar/Atualizar cupom</strong>
         </div>
         <div class="card-body">
-          <form class="row g-3">
+          <form class="row g-3" id="formCupom" action="../PHP/cupom.php" method="POST" enctype="multipart/form-data">
             <div class="col-md-4">
               <label class="form-label">Nome do cupom</label>
-              <input type="text" class="form-control" maxlength="45" placeholder="PET10">
+              <input type="text" class="form-control" name="CupomNome" id="nome-cupom" maxlength="45"
+                placeholder="PET10">
             </div>
             <div class="col-md-4">
               <label class="form-label">Valor (R$ ou %)</label>
-              <input type="number" class="form-control" step="0.01" placeholder="Ex.: 10,00">
-              <div class="form-text">* Interpretação do tipo no backend.</div>
+              <input type="number" class="form-control" name="valor_cupom" id="valor-cupom" step="0.01"
+                placeholder="Ex.: 10,00">
+
             </div>
             <div class="col-md-4">
               <label class="form-label">Validade</label>
-              <input type="date" class="form-control">
+              <input type="date" class="form-control" name="validade_cupom" id="validade-cupom">
             </div>
             <div class="col-md-4">
               <label class="form-label">Quantidade</label>
-              <input type="number" class="form-control" min="1" placeholder="50">
+              <input type="number" class="form-control" name="quantidade_cupom" id="quantidade-cupom" min="1"
+                placeholder="50">
             </div>
             <div class="col-12 d-flex gap-2">
-              <button type="button" class="btn btn-primary" disabled>Cadastrar</button>
-              <button type="button" class="btn btn-outline-secondary" disabled>Editar</button>
-              <button type="button" class="btn btn-outline-danger" disabled>Excluir</button>
+              <button type="submit" class="btn btn-primary" id="btn-cadastrar">Cadastrar</button>
+              <button type="button" class="btn btn-outline-secondary" id="btn-editar">Editar</button>
+              <button type="button" class="btn btn-outline-danger" id="btn-excluir">Excluir</button>
             </div>
           </form>
         </div>
 
-        <!-- Lista de Cupons -->
+        <!-- Lista de Cupons Dinâmica -->
         <div class="card-body border-top">
           <div class="table-responsive">
-            <table class="table align-middle table-hover table-list">
+            <table class="table align-middle table-hover table-list" id="tabelaCupons">
               <thead class="table-light">
                 <tr>
+                  <th>id</th>
                   <th>Nome</th>
                   <th>Valor</th>
                   <th>Validade</th>
@@ -193,34 +168,11 @@
                   <th class="text-end" style="width:170px;">Ações</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>PET10</td>
-                  <td>10,00</td>
-                  <td>31/10/2025</td>
-                  <td>100</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Excluir</a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>PETFRETE</td>
-                  <td>15,00</td>
-                  <td>30/11/2025</td>
-                  <td>50</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Excluir</a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="tabelacupom"></tbody>
               <tfoot>
-                <tr><td colspan="5" class="small text-muted">* Lista estática (HTML). Integração posterior.</td></tr>
+                <tr>
+
+                </tr>
               </tfoot>
             </table>
           </div>
@@ -228,11 +180,10 @@
       </div>
     </section>
 
-    <!-- ===================== PROMOÇÕES EM CATEGORIAS ===================== -->
+    <!-- ===================== PROMOÇÕES EM SERVIÇOS ===================== -->
     <section class="mb-5" aria-labelledby="titulo-promocao-categoria">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-        <h4 id="titulo-promocao-categoria" class="section-title m-0">Promoções em Categorias</h4>
-        <span class="text-muted small">Tabela: <code>categorias_produtos.desconto</code></span>
+        <h4 id="titulo-promocao-categoria" class="section-title m-0">Promoções em Serviços</h4>
       </div>
 
       <div class="card shadow-sm">
@@ -242,11 +193,9 @@
         <div class="card-body">
           <form class="row g-3">
             <div class="col-md-6">
-              <label class="form-label">Categoria</label>
-              <select class="form-select">
-                <option value="1">Acessórios</option>
-                <option value="2">Alimentos</option>
-                <option value="3">Higiene</option>
+              <label for="Categoria" class="form-label">Categoria</label>
+              <select name="categoria" id="Categoriaser" class="form-select">
+                <option value="">Selecione...</option>
               </select>
             </div>
             <div class="col-md-3">
@@ -254,12 +203,11 @@
               <input type="number" class="form-control" min="0" max="100" step="0.01" placeholder="10">
             </div>
             <div class="col-md-3">
-              <label class="form-label">Validade (visual)</label>
+              <label class="form-label">Validade </label>
               <input type="date" class="form-control">
-              <div class="form-text">* Campo visual; controle real no backend se desejar expirar.</div>
             </div>
             <div class="col-12 d-flex gap-2">
-              <button type="button" class="btn btn-primary" disabled>Aplicar</button>
+              <button type="submit" class="btn btn-primary">Aplicar</button>
               <button type="button" class="btn btn-outline-secondary" disabled>Editar</button>
               <button type="button" class="btn btn-outline-danger" disabled>Remover</button>
             </div>
@@ -279,31 +227,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Acessórios</td>
-                  <td>10%</td>
-                  <td>31/10/2025</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Remover</a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Alimentos</td>
-                  <td>5%</td>
-                  <td>15/11/2025</td>
-                  <td class="text-end">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-outline-secondary disabled" aria-disabled="true">Editar</a>
-                      <a href="#" class="btn btn-outline-danger disabled" aria-disabled="true">Remover</a>
-                    </div>
-                  </td>
-                </tr>
+
               </tbody>
               <tfoot>
-                <tr><td colspan="4" class="small text-muted">* Exibição estática (HTML). Integração posterior.</td></tr>
+
               </tfoot>
             </table>
           </div>
@@ -391,7 +318,9 @@
                 </tr>
               </tbody>
               <tfoot>
-                <tr><td colspan="6" class="small text-muted">* Exibição estática (HTML). Integração posterior.</td></tr>
+                <tr>
+                  <td colspan="6" class="small text-muted">* Exibição estática (HTML). Integração posterior.</td>
+                </tr>
               </tfoot>
             </table>
           </div>
@@ -410,5 +339,35 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <script src="../JS/banner.js"></script>
+  <script src="../JS/cadastro_produtos_logista.js"></script>
+  <script src="../JS/cupom.js"></script>
+
+  <script>
+    const inputBanner = document.getElementById('imgbanner');
+    const previewBanner = document.getElementById('previewBanner');
+    const previewText = document.getElementById('previewText');
+
+    inputBanner.addEventListener('change', () => {
+      const file = inputBanner.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          previewBanner.src = e.target.result;
+          previewBanner.style.display = 'block';
+          previewText.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewBanner.src = '';
+        previewBanner.style.display = 'none';
+        previewText.style.display = 'block';
+      }
+    });
+  </script>
+
 </body>
+
+
 </html>

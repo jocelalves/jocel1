@@ -24,4 +24,6 @@ function listarcategorias(nomeid){
 
 listarcategorias("#svCategoria");
 listarcategorias ("#serviCategoria");
+listarcategorias("#Categoriabanner");
+listarcategorias("#Categoriaser");
 
