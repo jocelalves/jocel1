@@ -42,72 +42,154 @@ function normalize_date_to_ymd(?string $s): ?string {
 
 /* ===================== LISTAGEM ===================== */
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['listar'])) {
-  header('Content-Type: application/json; charset=utf-8');
-  try {
-    $sql  = "SELECT idCupom, nome, valor, data_validade, quantidade
-             FROM Cupom ORDER BY idCupom DESC";
-    $stmt = $pdo->query($sql);
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    try {
+        $sql  = "SELECT idCupom, nome, valor, data_validade, quantidade
+                 FROM Cupom ORDER BY idCupom DESC";
+        $stmt = $pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $cupons = array_map(fn($r) => [
-      'id'            => (int)$r['idCupom'],
-      'nome'          => $r['nome'],
-      'valor'         => (float)$r['valor'],
-      'data_validade' => $r['data_validade'],
-      'quantidade'    => (int)$r['quantidade']
-    ], $rows);
+        $cupons = array_map(fn($r) => [
+            'id' => (int)$r['idCupom'],
+            'nome' => $r['nome'],
+            'valor' => (float)$r['valor'],
+            'data_validade' => $r['data_validade'],
+            'quantidade' => (int)$r['quantidade']
+        ], $rows);
 
-    echo json_encode(['ok' => true, 'count' => count($cupons), 'cupons' => $cupons], JSON_UNESCAPED_UNICODE);
-    exit;
+        echo json_encode(['ok' => true, 'count' => count($cupons), 'cupons' => $cupons], JSON_UNESCAPED_UNICODE);
+        exit;
 
-  } catch (Throwable $e) {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Erro ao listar cupons', 'detail' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
-    exit;
-  }
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['ok' => false, 'error' => 'Erro ao listar cupons', 'detail' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 }
+
+
+
+
+/* ===================== EDIÇÃO ===================== */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'atualizar') {
+    try {
+        $id   = (int)($_POST['id'] ?? 0);
+        $nome = trim($_POST['CupomNome'] ?? '');
+        $valorRaw = $_POST['valor_cupom'] ?? '';
+        $dataRaw  = $_POST['validade_cupom'] ?? '';
+        $quantRaw = $_POST['quantidade_cupom'] ?? '';
+
+        $valor = (float)str_replace(',', '.', $valorRaw);
+        $data  = normalize_date_to_ymd($dataRaw);
+        $quant = (int)$quantRaw;
+
+        $erros = [];
+        if ($id <= 0) $erros[] = 'ID do cupom inválido.';
+        if ($nome === '') $erros[] = 'Informe o nome do cupom.';
+        elseif (mb_strlen($nome) > 45) $erros[] = 'Nome deve ter no máximo 45 caracteres.';
+        if ($valor <= 0) $erros[] = 'Valor deve ser maior que zero.';
+        if (!$data) $erros[] = 'Data de validade inválida.';
+        if ($quant <= 0) $erros[] = 'Quantidade deve ser maior que zero.';
+
+        if ($erros) {
+            echo json_encode(['ok' => false, 'error' => implode(' ', $erros)]);
+            exit;
+        }
+
+        $sql = "UPDATE Cupom 
+                SET nome = :n, valor = :v, data_validade = :d, quantidade = :q
+                WHERE idCupom = :id";
+        $st = $pdo->prepare($sql);
+        $st->bindValue(':n', $nome, PDO::PARAM_STR);
+        $st->bindValue(':v', $valor, PDO::PARAM_STR);
+        $st->bindValue(':d', $data, PDO::PARAM_STR);
+        $st->bindValue(':q', $quant, PDO::PARAM_INT);
+        $st->bindValue(':id', $id, PDO::PARAM_INT);
+        $st->execute();
+
+        echo json_encode(['ok' => true]);
+        exit;
+
+    } catch (Throwable $e) {
+        echo json_encode(['ok' => false, 'error' => 'Erro ao editar cupom: ' . $e->getMessage()]);
+        exit;
+    }
+}
+
+
+/* ===================== EXCLUSÃO ===================== */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'excluir') {
+    try {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            echo json_encode(['ok' => false, 'error' => 'ID inválido para exclusão.']);
+            exit;
+        }
+
+        $st = $pdo->prepare("DELETE FROM Cupom WHERE idCupom = :id");
+        $st->bindValue(':id', $id, PDO::PARAM_INT);
+        $st->execute();
+
+        // Verifica se realmente foi excluído
+        $st = $pdo->prepare("SELECT COUNT(*) FROM Cupom WHERE idCupom = :id");
+        $st->bindValue(':id', $id, PDO::PARAM_INT);
+        $st->execute();
+        if ($st->fetchColumn() > 0) {
+            echo json_encode(['ok' => false, 'error' => 'Erro: não foi possível excluir o cupom.']);
+            exit;
+        }
+
+        echo json_encode(['ok' => true]);
+        exit;
+
+    } catch (Throwable $e) {
+        echo json_encode(['ok' => false, 'error' => 'Erro ao excluir cupom: ' . $e->getMessage()]);
+        exit;
+    }
+}
+
+
 
 /* ===================== CADASTRO ===================== */
 try {
-  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['erro_cupom' => 'Método inválido']);
-  }
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['erro_cupom' => 'Método inválido']);
+    }
 
-  // coleta dos dados do formulário
-  $nome       = trim($_POST['CupomNome'] ?? '');
-  $valorRaw   = $_POST['valor_cupom'] ?? '';
-  $dataRaw    = $_POST['validade_cupom'] ?? '';
-  $quantRaw   = $_POST['quantidade_cupom'] ?? '';
+    $nome       = trim($_POST['CupomNome'] ?? '');
+    $valorRaw   = $_POST['valor_cupom'] ?? '';
+    $dataRaw    = $_POST['validade_cupom'] ?? '';
+    $quantRaw   = $_POST['quantidade_cupom'] ?? '';
 
-  $valor = (float)str_replace(',', '.', $valorRaw);
-  $data  = normalize_date_to_ymd($dataRaw);
-  $quant = (int)$quantRaw;
+    $valor = (float)str_replace(',', '.', $valorRaw);
+    $data  = normalize_date_to_ymd($dataRaw);
+    $quant = (int)$quantRaw;
 
-  // validações
-  $erros = [];
-  if ($nome === '') $erros[] = 'Informe o nome do cupom.';
-  elseif (mb_strlen($nome) > 45) $erros[] = 'Nome deve ter no máximo 45 caracteres.';
-  if ($valor <= 0) $erros[] = 'Valor deve ser maior que zero.';
-  if (!$data) $erros[] = 'Data de validade inválida (aceito: YYYY-MM-DD ou DD/MM/YYYY).';
-  if ($quant <= 0) $erros[] = 'Quantidade deve ser maior que zero.';
+    $erros = [];
+    if ($nome === '') $erros[] = 'Informe o nome do cupom.';
+    elseif (mb_strlen($nome) > 45) $erros[] = 'Nome deve ter no máximo 45 caracteres.';
+    if ($valor <= 0) $erros[] = 'Valor deve ser maior que zero.';
+    if (!$data) $erros[] = 'Data de validade inválida.';
+    if ($quant <= 0) $erros[] = 'Quantidade deve ser maior que zero.';
 
-  if ($erros) {
-    redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['erro_cupom' => implode(' ', $erros)]);
-  }
+    if ($erros) {
+        redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['erro_cupom' => implode(' ', $erros)]);
+    }
 
-  // inserção no banco
-  $sql = "INSERT INTO Cupom (nome, valor, data_validade, quantidade)
-          VALUES (:n, :v, :d, :q)";
-  $st = $pdo->prepare($sql);
-  $st->bindValue(':n', $nome, PDO::PARAM_STR);
-  $st->bindValue(':v', $valor, PDO::PARAM_STR);
-  $st->bindValue(':d', $data, PDO::PARAM_STR);
-  $st->bindValue(':q', $quant, PDO::PARAM_INT);
-  $st->execute();
+    $sql = "INSERT INTO Cupom (nome, valor, data_validade, quantidade)
+            VALUES (:n, :v, :d, :q)";
+    $st = $pdo->prepare($sql);
+    $st->bindValue(':n', $nome, PDO::PARAM_STR);
+    $st->bindValue(':v', $valor, PDO::PARAM_STR);
+    $st->bindValue(':d', $data, PDO::PARAM_STR);
+    $st->bindValue(':q', $quant, PDO::PARAM_INT);
+    $st->execute();
 
-  redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['cadastro_cupom' => 'ok']);
+    echo json_encode(['ok' => true, 'id' => $pdo->lastInsertId()]);
+    exit;
 
 } catch (Throwable $e) {
-  redirect_with('../PAGINAS_LOGISTA/promocoes_logista.html', ['erro_cupom' => 'Erro no banco de dados: ' . $e->getMessage()]);
+    echo json_encode(['ok' => false, 'error' => 'Erro no banco de dados: ' . $e->getMessage()]);
+    exit;
 }
 ?>

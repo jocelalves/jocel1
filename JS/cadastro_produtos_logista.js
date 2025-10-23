@@ -26,4 +26,5 @@ listarcategorias("#svCategoria");
 listarcategorias ("#serviCategoria");
 listarcategorias("#Categoriabanner");
 listarcategorias("#Categoriaser");
+listarcategorias("#edit-banner-categoria");
 

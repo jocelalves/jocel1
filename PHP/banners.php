@@ -1,8 +1,7 @@
 <?php
-// Conectando ao banco de dados
 require_once __DIR__ . "/conexao.php";
 
-// Função para redirecionar com parâmetros
+// Função para redirecionar (caso necessário)
 function redirecWith($url, $params = []) {
     if (!empty($params)) {
         $qs  = http_build_query($params);
@@ -20,38 +19,106 @@ function readImageToBlob(?array $file): ?string {
     return $content === false ? null : $content;
 }
 
-// ================= LISTAR BANNERS =================
+// ================= LISTAGEM =================
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
     try {
         $sql = "SELECT idBanner, descricao, link, categoria, validade, imagem FROM Banners ORDER BY validade DESC";
         $stmt = $pdo->query($sql);
         $banners = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Converte LONGBLOB em Base64 para exibir no <img src="">
-        foreach ($banners as &$banner) {
-            if (!empty($banner['imagem'])) {
-                $banner['imagem'] = 'data:image/jpeg;base64,' . base64_encode($banner['imagem']);
-            } else {
-                $banner['imagem'] = null;
-            }
+        foreach ($banners as &$b) {
+            $b['imagem'] = !empty($b['imagem']) ? 'data:image/jpeg;base64,' . base64_encode($b['imagem']) : null;
         }
 
         header("Content-Type: application/json; charset=utf-8");
-        echo json_encode(["ok" => true, "banners" => $banners], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['ok' => true, 'banners' => $banners]);
         exit;
-
     } catch (Throwable $e) {
-        header('Content-Type: application/json; charset=utf-8', true, 500);
-        echo json_encode(['ok' => false, 'error' => 'Erro ao listar banners', 'detail' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+        header("Content-Type: application/json", true, 500);
+        echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
         exit;
     }
 }
 
-// ================= CADASTRAR BANNER =================
-try {
-    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        redirecWith("../paginas_logista/promocoes_logista.html", ["erro" => "Método inválido"]);
+// ================= EDITAR =================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'atualizar') {
+    try {
+        $id        = (int)($_POST['id'] ?? 0);
+        $descricao = trim($_POST['descricao'] ?? '');
+        $validade  = trim($_POST['validade'] ?? '');
+        $link      = trim($_POST['link'] ?? '');
+        $categoria = $_POST['categoria'] ?? null;
+        $categoria = ($categoria === '' || $categoria === null) ? null : (int)$categoria;
+        $imgBlob   = readImageToBlob($_FILES['imgbanner'] ?? null);
+
+        if ($id <= 0) throw new Exception('ID inválido.');
+        $erros = [];
+        if ($descricao === '') $erros[] = 'Descrição obrigatória.';
+        if ($validade === '') $erros[] = 'Validade obrigatória.';
+        if ($erros) throw new Exception(implode(' ', $erros));
+
+        $setSql = "descricao = :descricao, validade = :validade, link = :link, categoria = :categoria";
+        if ($imgBlob !== null) $setSql = "imagem = :imagem, " . $setSql;
+
+        $sql = "UPDATE Banners SET $setSql WHERE idBanner = :id";
+        $stmt = $pdo->prepare($sql);
+
+        if ($imgBlob !== null) $stmt->bindValue(':imagem', $imgBlob, PDO::PARAM_LOB);
+        $stmt->bindValue(':descricao', $descricao, PDO::PARAM_STR);
+        $stmt->bindValue(':validade', $validade, PDO::PARAM_STR);
+        $stmt->bindValue(':link', $link !== '' ? $link : null, $link !== '' ? PDO::PARAM_STR : PDO::PARAM_NULL);
+        $stmt->bindValue(':categoria', $categoria, $categoria !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Retorna o banner atualizado
+        $stmt = $pdo->prepare("SELECT idBanner, descricao, link, categoria, validade, imagem FROM Banners WHERE idBanner = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $banner = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($banner['imagem']) $banner['imagem'] = 'data:image/jpeg;base64,' . base64_encode($banner['imagem']);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['ok' => true, 'banner' => $banner]);
+        exit;
+
+    } catch (Throwable $e) {
+        header('Content-Type: application/json', true, 500);
+        echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+        exit;
     }
+}
+
+// ================= EXCLUIR =================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'excluir') {
+    try {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) throw new Exception('ID inválido para exclusão.');
+
+        $stmt = $pdo->prepare("DELETE FROM Banners WHERE idBanner = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Verifica se realmente foi excluído
+        $check = $pdo->prepare("SELECT COUNT(*) FROM Banners WHERE idBanner = :id");
+        $check->bindValue(':id', $id, PDO::PARAM_INT);
+        $check->execute();
+        if ($check->fetchColumn() > 0) throw new Exception('Não foi possível excluir.');
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['ok' => true]);
+        exit;
+
+    } catch (Throwable $e) {
+        header('Content-Type: application/json', true, 500);
+        echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+        exit;
+    }
+}
+
+// ================= CADASTRAR =================
+try {
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") throw new Exception('Método inválido.');
 
     $descricao = trim($_POST["descricao"] ?? '');
     $link = trim($_POST["link"] ?? '');
@@ -60,14 +127,12 @@ try {
     $imagem = readImageToBlob($_FILES["imgbanner"] ?? null);
 
     $erros = [];
-    if ($descricao === '') $erros[] = "A descrição é obrigatória.";
-    if ($validade === '') $erros[] = "A data de validade é obrigatória.";
-    if ($categoria === '') $erros[] = "A categoria é obrigatória.";
-    if ($imagem === null) $erros[] = "A imagem do banner é obrigatória.";
+    if ($descricao === '') $erros[] = "Descrição obrigatória.";
+    if ($validade === '') $erros[] = "Validade obrigatória.";
+    if ($categoria === '') $erros[] = "Categoria obrigatória.";
+    if ($imagem === null) $erros[] = "Imagem obrigatória.";
 
-    if (!empty($erros)) {
-        redirecWith("../paginas_logista/promocoes_logista.html", ["erro" => implode(" ", $erros)]);
-    }
+    if ($erros) throw new Exception(implode(" ", $erros));
 
     $sql = "INSERT INTO Banners (descricao, link, categoria, validade, imagem)
             VALUES (:descricao, :link, :categoria, :validade, :imagem)";
@@ -79,9 +144,20 @@ try {
     $stmt->bindParam(":imagem", $imagem, PDO::PARAM_LOB);
     $stmt->execute();
 
-    redirecWith("../paginas_logista/promocoes_logista.html", ["cadastro" => "ok"]);
+    // Retorna o banner cadastrado
+    $id = $pdo->lastInsertId();
+    $stmt = $pdo->prepare("SELECT idBanner, descricao, link, categoria, validade, imagem FROM Banners WHERE idBanner = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $banner = $stmt->fetch(PDO::FETCH_ASSOC);
+    $banner['imagem'] = 'data:image/jpeg;base64,' . base64_encode($banner['imagem']);
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok' => true, 'banner' => $banner]);
+    exit;
 
 } catch (Exception $e) {
-    redirecWith("../paginas_logista/promocoes_logista.html", ["erro" => "Erro no banco de dados: " . $e->getMessage()]);
+    header('Content-Type: application/json', true, 500);
+    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }
 ?>

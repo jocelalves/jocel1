@@ -114,6 +114,52 @@
       </div>
     </section>
 
+
+    <!-- ================= MODAL DE EDIÇÃO ================= -->
+    <div class="modal fade" id="modalEditarBanner" tabindex="-1" aria-labelledby="modalEditarBannerLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form id="formEditarBanner" enctype="multipart/form-data">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalEditarBannerLabel">Editar Banner</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="edit-banner-id" name="id">
+              <div class="row g-3">
+                <div class="col-12 col-md-4">
+                  <label class="form-label">Imagem do banner</label>
+                  <div class="banner-thumb position-relative border rounded overflow-hidden" style="height:200px;">
+                    <img id="edit-previewBanner" src="" alt="Prévia" class="w-100 h-100 object-fit-cover"
+                      style="display:none;">
+                    <span id="edit-previewText"
+                      class="text-muted position-absolute top-50 start-50 translate-middle">Prévia</span>
+                  </div>
+                  <input type="file" class="form-control mt-2" accept="image/*" name="imgbanner" id="edit-imgbanner">
+                </div>
+                <div class="col-12 col-md-8">
+                  <label class="form-label">Descrição</label>
+                  <input type="text" class="form-control" id="edit-banner-descricao" name="descricao" maxlength="45"
+                    required>
+                  <label class="form-label mt-2">Link</label>
+                  <input type="text" class="form-control" id="edit-banner-link" name="link" maxlength="45">
+                  <label class="form-label mt-2 ">Categoria</label>
+                  <select id="edit-banner-categoria" name="categoria" class="form-select"></select>
+                  <label class="form-label mt-2">Data de validade</label>
+                  <input type="date" class="form-control" id="edit-banner-validade" name="validade" required>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== CUPONS ===================== -->
     <section class="mb-5" aria-labelledby="titulo-cupom">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">

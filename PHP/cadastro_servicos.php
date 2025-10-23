@@ -52,7 +52,7 @@ try {
 
     $pdo->beginTransaction();
 
-    // Inserir serviço
+    // Inserir/CADASTRAR serviço
     $sqlServico = "INSERT INTO Servicos (nome, descricao, preco_servico, desconto, Categorias_Servicos_idCategorias_Servicos)
                    VALUES (:nome, :descricao, :preco, :desconto, :categoria_id)";
     $stmServico = $pdo->prepare($sqlServico);
