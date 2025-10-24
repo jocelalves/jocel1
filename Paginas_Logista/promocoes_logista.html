@@ -170,32 +170,31 @@
         <div class="card-header bg-white">
           <strong>Cadastrar/Atualizar cupom</strong>
         </div>
+
         <div class="card-body">
-          <form class="row g-3" id="formCupom" action="../PHP/cupom.php" method="POST" enctype="multipart/form-data">
+          <!-- Formulário de cadastro -->
+          <form class="row g-3"  action="../PHP/cupom.php" method="post">
             <div class="col-md-4">
               <label class="form-label">Nome do cupom</label>
               <input type="text" class="form-control" name="CupomNome" id="nome-cupom" maxlength="45"
-                placeholder="PET10">
+                placeholder="PET10" required>
             </div>
             <div class="col-md-4">
               <label class="form-label">Valor (R$ ou %)</label>
               <input type="number" class="form-control" name="valor_cupom" id="valor-cupom" step="0.01"
-                placeholder="Ex.: 10,00">
-
+                placeholder="Ex.: 10,00" required>
             </div>
             <div class="col-md-4">
               <label class="form-label">Validade</label>
-              <input type="date" class="form-control" name="validade_cupom" id="validade-cupom">
+              <input type="date" class="form-control" name="validade_cupom" id="validade-cupom" required>
             </div>
             <div class="col-md-4">
               <label class="form-label">Quantidade</label>
               <input type="number" class="form-control" name="quantidade_cupom" id="quantidade-cupom" min="1"
-                placeholder="50">
+                placeholder="50" required>
             </div>
             <div class="col-12 d-flex gap-2">
-              <button type="submit" class="btn btn-primary" id="btn-cadastrar">Cadastrar</button>
-              <button type="button" class="btn btn-outline-secondary" id="btn-editar">Editar</button>
-              <button type="button" class="btn btn-outline-danger" id="btn-excluir">Excluir</button>
+              <button type="submit" class="btn btn-primary">Cadastrar</button>
             </div>
           </form>
         </div>
@@ -214,17 +213,15 @@
                   <th class="text-end" style="width:170px;">Ações</th>
                 </tr>
               </thead>
-              <tbody id="tabelacupom"></tbody>
-              <tfoot>
-                <tr>
-
-                </tr>
-              </tfoot>
+              <tbody id="tbcupom"></tbody>
             </table>
           </div>
         </div>
       </div>
     </section>
+
+
+    
 
     <!-- ===================== PROMOÇÕES EM SERVIÇOS ===================== -->
     <section class="mb-5" aria-labelledby="titulo-promocao-categoria">

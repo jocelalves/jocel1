@@ -32,8 +32,8 @@ function bannerRow(b) {
       <td>${esc(b.categoria)}</td>
       <td>${esc(b.validade)}</td>
       <td class="text-end">
-        <button class="btn btn-sm btn-warning btn-editar" data-id="${b.idBanner}">Editar</button>
-        <button class="btn btn-sm btn-danger btn-excluir" data-id="${b.idBanner}">Excluir</button>
+        <button class="btn btn-sm btn-warning btn-editar-b" data-id="${b.idBanner}">Editar</button>
+        <button class="btn btn-sm btn-danger btn-excluir-b" data-id="${b.idBanner}">Excluir</button>
       </td>
     </tr>`;
 }
@@ -48,7 +48,7 @@ const editImgInput = document.getElementById('edit-imgbanner');
 
 // Abrir modal e preencher dados
 document.addEventListener('click', e => {
-  const btn = e.target.closest('.btn-editar');
+  const btn = e.target.closest('.btn-editar-b');
   if (!btn) return;
 
   const tr = btn.closest('tr');
@@ -203,13 +203,13 @@ document.getElementById('formBanner').addEventListener('submit', function(e) {
 
 // ====================== DELEGAR CLICK NOS BOTÕES ======================
 document.addEventListener('click', function(e) {
-  if (e.target.matches('.btn-excluir') || e.target.closest('.btn-excluir')) {
-    const btn = e.target.closest('.btn-excluir');
+  if (e.target.matches('.btn-excluir-b') || e.target.closest('.btn-excluir-b')) {
+    const btn = e.target.closest('.btn-excluir-b');
     excluirBanner(btn.dataset.id);
   }
 
-  if (e.target.matches('.btn-editar') || e.target.closest('.btn-editar')) {
-    const btn = e.target.closest('.btn-editar');
+  if (e.target.matches('.btn-editar-b') || e.target.closest('.btn-editar-b')) {
+    const btn = e.target.closest('.btn-editar-b');
     const tr = btn.closest('tr');
     const banner = {
       idBanner: btn.dataset.id,
@@ -225,5 +225,5 @@ document.addEventListener('click', function(e) {
 
 // ====================== INICIALIZAÇÃO ======================
 document.addEventListener('DOMContentLoaded', () => {
-  listarBanners();
+  listarBanners("#tabelaBanners");
 });

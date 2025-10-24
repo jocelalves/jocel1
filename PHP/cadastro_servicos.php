@@ -12,27 +12,34 @@ function redirecWith($url, $params = []) {
     exit;
 }
 
+
+// ====================== FUNÇÃO AUXILIAR ======================
 // Converte arquivo para blob
 function readImageToBlob(?array $file): ?string {
-    if (!$file || !isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) return null;
+    if (!$file || !isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
     $content = file_get_contents($file['tmp_name']);
     return $content === false ? null : $content;
 }
 
 try {
+    // ====================== VERIFICAÇÃO DE MÉTODO ======================
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
         redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["erro" => "Método inválido"]);
     }
 
-    // Campos do formulário
+    // ====================== CAPTURA DOS CAMPOS ======================
     $nome = trim($_POST["nomeservico"] ?? '');
     $descricao = trim($_POST["descricao_servico"] ?? '');
     $preco = filter_var($_POST["preco_servico"], FILTER_VALIDATE_FLOAT);
     $desconto = filter_var($_POST["desconto_servico"], FILTER_VALIDATE_FLOAT) ?? 0;
     $categoria_id = (int)($_POST["categoria_Servicos"] ?? 0);
 
-    // Validação
+    // ====================== VALIDAÇÃO ======================
     $erros = [];
+
     if ($nome === '') $erros[] = "O nome do serviço é obrigatório.";
     if ($descricao === '') $erros[] = "A descrição do serviço é obrigatória.";
     if ($preco === false || $preco <= 0) $erros[] = "O preço do serviço deve ser maior que zero.";
@@ -43,18 +50,23 @@ try {
         redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["erro" => implode(" ", $erros)]);
     }
 
-    // Imagens
+    // ====================== PROCESSAMENTO DAS IMAGENS ======================
     $imagens = [
         readImageToBlob($_FILES["imgproduto1"] ?? null),
         readImageToBlob($_FILES["imgproduto2"] ?? null),
         readImageToBlob($_FILES["imgproduto3"] ?? null)
     ];
 
+    // ====================== INÍCIO DA TRANSAÇÃO ======================
     $pdo->beginTransaction();
 
-    // Inserir/CADASTRAR serviço
-    $sqlServico = "INSERT INTO Servicos (nome, descricao, preco_servico, desconto, Categorias_Servicos_idCategorias_Servicos)
-                   VALUES (:nome, :descricao, :preco, :desconto, :categoria_id)";
+    // ====================== INSERIR SERVIÇO ======================
+    $sqlServico = "
+        INSERT INTO Servicos 
+            (nome, descricao, preco_servico, desconto, Categorias_Servicos_idCategorias_Servicos)
+        VALUES 
+            (:nome, :descricao, :preco, :desconto, :categoria_id)
+    ";
     $stmServico = $pdo->prepare($sqlServico);
     $stmServico->execute([
         ":nome" => $nome,
@@ -66,12 +78,16 @@ try {
 
     $idServico = (int)$pdo->lastInsertId();
 
-    // Inserir imagens e vincular
+    // ====================== INSERIR IMAGENS E VINCULAR ======================
     $sqlImagem = "INSERT INTO Imagem_Servicos (foto, descricao) VALUES (:foto, NULL)";
     $stmImagem = $pdo->prepare($sqlImagem);
 
-    $sqlVinculo = "INSERT INTO Servicos_has_Imagem_Servicos (Servicos_idServicos, Imagem_Servicos_idImagem_Servicos)
-                   VALUES (:idServico, :idImagem)";
+    $sqlVinculo = "
+        INSERT INTO Servicos_has_Imagem_Servicos 
+            (Servicos_idServicos, Imagem_Servicos_idImagem_Servicos)
+        VALUES 
+            (:idServico, :idImagem)
+    ";
     $stmVinculo = $pdo->prepare($sqlVinculo);
 
     foreach ($imagens as $img) {
@@ -86,10 +102,12 @@ try {
         }
     }
 
+    // ====================== COMMIT ======================
     $pdo->commit();
     redirecWith("../Paginas_Logista/cadastro_produtos_logista.html", ["sucesso" => "Serviço cadastrado com sucesso!"]);
 
 } catch (Exception $e) {
+    // ====================== ROLLBACK EM CASO DE ERRO ======================
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
