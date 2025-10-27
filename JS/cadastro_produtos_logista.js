@@ -28,3 +28,16 @@ listarcategorias("#Categoriabanner");
 listarcategorias("#Categoriaser");
 listarcategorias("#edit-banner-categoria");
 
+
+
+
+
+
+
+
+
+
+
+
+
+

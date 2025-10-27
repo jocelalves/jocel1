@@ -1,6 +1,7 @@
--- CREATE DATABASE ArrumaJa;
-USE ArrumaJa;
 
+CREATE DATABASE ArrumaJa;
+USE ArrumaJa;
+ drop database ArrumaJa;
 -- ==============================
 -- TABELA CLIENTE
 -- ==============================
@@ -10,7 +11,7 @@ CREATE TABLE Cliente (
     cpf VARCHAR(45) UNIQUE NOT NULL,
     telefone VARCHAR(150),
     email VARCHAR(150) UNIQUE,
-    senha VARCHAR(12) NOT NULL
+    senha VARCHAR(255) NOT NULL
 );
 
 -- ==============================
@@ -23,7 +24,7 @@ CREATE TABLE Endereco (
     estado VARCHAR(45) NOT NULL,
     numero VARCHAR(45) NOT NULL,
     complemento VARCHAR(45),
-    logradouro VARCHAR(45) NOT NULL,
+    logradouro VARCHAR(100) NOT NULL,
     bairro VARCHAR(45) NOT NULL
 );
 
@@ -54,8 +55,12 @@ CREATE TABLE Frete (
 CREATE TABLE Cupom (
     idCupom INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(45),
-    valor DOUBLE
+    valor float not null,
+    data_validade date not null,
+    quantidade int not null
 );
+
+select * from Cupom;
 
 -- ==============================
 -- TABELA FORMAS DE PAGAMENTO
@@ -68,9 +73,10 @@ CREATE TABLE Formas_Pagamento (
 -- ==============================
 -- TABELA CATEGORIAS SERVIÇOS
 -- ==============================
+-- 1️⃣ Tabela de categorias (precisa existir primeiro)
 CREATE TABLE Categorias_Servicos (
     idCategorias_Servicos INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(45),
+    nome VARCHAR(100) NOT null,
     desconto DOUBLE
 );
 
@@ -89,15 +95,20 @@ CREATE TABLE Marido_Aluguel (
 -- ==============================
 -- TABELA SERVICOS
 -- ==============================
+-- 2️⃣ Tabela de serviços
 CREATE TABLE Servicos (
     idServicos INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
-    descricao TEXT(500) NOT NULL,
+    descricao TEXT NOT NULL,
     preco_servico DOUBLE NOT NULL,
     desconto DOUBLE,
     Categorias_Servicos_idCategorias_Servicos INT NOT NULL,
-    FOREIGN KEY (Categorias_Servicos_idCategorias_Servicos) REFERENCES Categorias_Servicos(idCategorias_Servicos)
+    FOREIGN KEY (Categorias_Servicos_idCategorias_Servicos)
+        REFERENCES Categorias_Servicos(idCategorias_Servicos)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
+select * from Servicos;
 
 -- ==============================
 -- TABELA SERVICOS x MARIDO DE ALUGUEL
@@ -124,29 +135,34 @@ CREATE TABLE Horarios_Servicos (
 
 -- ==============================
 -- TABELA IMAGEM_SERVICOS
--- ==============================
+-- 3️⃣ Tabela de imagens (relacionada 1:N com serviços)
 CREATE TABLE Imagem_Servicos (
     idImagem_Servicos INT AUTO_INCREMENT PRIMARY KEY,
     foto LONGBLOB NOT NULL,
-    descricao VARCHAR(45)
+    descricao VARCHAR(255),
+    Servicos_idServicos INT NOT NULL,
+    FOREIGN KEY (Servicos_idServicos)
+        REFERENCES Servicos(idServicos)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
-CREATE TABLE Servicos_has_Imagem_Servicos (
-    Servicos_idServicos INT,
-    Imagem_Servicos_idImagem_Servicos INT,
-    CONSTRAINT fk_servicos FOREIGN KEY (Servicos_idServicos) REFERENCES Servicos(idServicos),
-    CONSTRAINT fk_imagem_servicos FOREIGN KEY (Imagem_Servicos_idImagem_Servicos) REFERENCES Imagem_Servicos(idImagem_Servicos)
-);
+
+
 
 -- ==============================
 -- TABELA BANNERS
 -- ==============================
 CREATE TABLE Banners (
-    idBanners INT AUTO_INCREMENT PRIMARY KEY,
-    imagem LONGBLOB NOT NULL,
-    data_validade DATE NOT NULL,
-    descricao VARCHAR(45)
+  idBanner INT AUTO_INCREMENT PRIMARY KEY,
+  descricao VARCHAR(100) NOT NULL,
+  link VARCHAR(150),
+  categoria VARCHAR(100),
+  validade DATE NOT NULL,
+  imagem LONGBLOB not null
 );
+select * from Banners;
+
 
 -- ==============================
 -- TABELA EMPRESA

@@ -92,9 +92,6 @@
               </div>
             </div>
 
-
-
-
             <!-- Modal Excluir -->
             <div class="modal fade" id="modalExcluir" tabindex="-1">
               <div class="modal-dialog">
@@ -129,8 +126,11 @@
         </div>
         <div class="card-body">
 
-          <form action="../PHP/cadastro_servicos.php" method="post" class="row g-3"
+          <form id="formServico" action="../PHP/cadastro_servicos.php" method="post" class="row g-3"
             enctype="multipart/form-data">
+            <!-- Campos hidden para controle -->
+            <input type="hidden" name="acao" id="acao" value="cadastrar">
+            <input type="hidden" name="id" id="idServico">
 
             <!-- Nome e Preço -->
             <div class="col-md-6">
@@ -145,7 +145,6 @@
                 placeholder="0,00" required>
             </div>
 
-
             <!-- Desconto e Categoria -->
             <div class="col-md-6">
               <label for="srvDesconto" class="form-label">Desconto (%)</label>
@@ -159,6 +158,7 @@
                 <option value="">Selecione...</option>
               </select>
             </div>
+
             <!-- Descrição -->
             <div class="col-12">
               <label for="srvDescricao" class="form-label">Descrição</label>
@@ -166,34 +166,40 @@
                 placeholder="Descreva os detalhes do serviço..." required></textarea>
             </div>
 
-            <!-- Imagens -->
+            <!-- Imagens com Preview -->
             <div class="col-12">
               <label class="form-label">Imagens do Serviço</label>
               <div class="row g-3">
-                <div class="col-12 col-sm-4">
-                  <input name="imgproduto1" class="form-control" type="file" accept="image/*" required>
+                <div class="col-12 col-sm-4 text-center">
+                  <input name="imgproduto1" class="form-control mb-1" type="file" accept="image/*" required
+                    onchange="previewImage(event, 'preview1')">
+                  <img id="preview1" src="#" alt="Preview" class="img-fluid d-none border rounded"
+                    style="max-height:150px;">
                 </div>
-                <div class="col-12 col-sm-4">
-                  <input name="imgproduto2" class="form-control" type="file" accept="image/*" required>
+                <div class="col-12 col-sm-4 text-center">
+                  <input name="imgproduto2" class="form-control mb-1" type="file" accept="image/*" required
+                    onchange="previewImage(event, 'preview2')">
+                  <img id="preview2" src="#" alt="Preview" class="img-fluid d-none border rounded"
+                    style="max-height:150px;">
                 </div>
-                <div class="col-12 col-sm-4">
-                  <input name="imgproduto3" class="form-control" type="file" accept="image/*">
+                <div class="col-12 col-sm-4 text-center">
+                  <input name="imgproduto3" class="form-control mb-1" type="file" accept="image/*"
+                    onchange="previewImage(event, 'preview3')">
+                  <img id="preview3" src="#" alt="Preview" class="img-fluid d-none border rounded"
+                    style="max-height:150px;">
                 </div>
               </div>
             </div>
 
             <div class="col-12 d-flex gap-2">
-              <button type="submit" class="btn btn-primary">Cadastrar</button>
-              <button type="button" class="btn btn-outline-secondary">Editar</button>
-              <button type="button" class="btn btn-outline-danger">Excluir</button>
+              <button type="submit" class="btn btn-primary" id="btnSalvar">Cadastrar</button>
             </div>
-
           </form>
         </div>
       </div>
 
-
-      <!-- Lista de Serviços  Dinâmica -->
+      <!-- Lista de Serviços Dinâmica -->
+      <div class="card mt-3">
         <div class="card-body border-top">
           <div class="table-responsive">
             <table class="table align-middle table-hover table-list" id="tabelaServicos">
@@ -201,9 +207,10 @@
                 <tr>
                   <th>Serviço</th>
                   <th>Preço</th>
-                  <th>desconto</th>
+                  <th>Desconto</th>
                   <th>Categoria</th>
                   <th>Descrição</th>
+                  <th>Imagens</th>
                   <th class="text-end" style="width:170px;">Ações</th>
                 </tr>
               </thead>
@@ -213,6 +220,64 @@
         </div>
       </div>
     </section>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-warning-subtle">
+            <h5 class="modal-title">Editar Serviço</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editId">
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input type="text" id="editNome" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descrição</label>
+              <textarea id="editDescricao" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Preço</label>
+              <input type="number" step="0.01" id="editPreco" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Desconto (%)</label>
+              <input type="number" step="0.01" id="editDesconto" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Categoria</label>
+              <select id="editCategoria" class="form-select">
+                <option value="">Selecione...</option>
+              </select>
+            </div>
+            <div class="col-12 text-center">
+              <label class="form-label">Imagens do Serviço</label>
+              <input type="file" id="editImg1" class="form-control mb-1" accept="image/*"
+                onchange="previewImage(event, 'editPreview1')">
+              <img id="editPreview1" src="#" alt="Preview" class="img-fluid d-none border rounded mb-2"
+                style="max-height:150px;">
+
+              <input type="file" id="editImg2" class="form-control mb-1" accept="image/*"
+                onchange="previewImage(event, 'editPreview2')">
+              <img id="editPreview2" src="#" alt="Preview" class="img-fluid d-none border rounded mb-2"
+                style="max-height:150px;">
+
+              <input type="file" id="editImg3" class="form-control" accept="image/*"
+                onchange="previewImage(event, 'editPreview3')">
+              <img id="editPreview3" src="#" alt="Preview" class="img-fluid d-none border rounded"
+                style="max-height:150px;">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-warning" id="confirmEditar">Editar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
 
@@ -230,9 +295,28 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Função de preview de imagens
+    function previewImage(event, previewId) {
+      const input = event.target;
+      const preview = document.getElementById(previewId);
+
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = e.target.result;
+          preview.classList.remove('d-none');
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        preview.src = '#';
+        preview.classList.add('d-none');
+      }
+    }
   </script>
   <script src="../JS/cadastro_produtos_logista.js"></script>
   <script src="../js/categorias.js"></script>
+  <script src="../JS/servicos.js"></script>
 
 </body>
 
