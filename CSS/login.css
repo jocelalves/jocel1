@@ -1,9 +1,81 @@
-/*configurando da área de login*/
-.login-card{
-  background-color: #168DEE; /*cor de fundo*/
+body {
+  background-color: #f8f9fa;
+  font-family: "Poppins", Arial, sans-serif;
+  margin: 0;
 }
-/* Início do CSS 75/25 ---------------- */
+
+.login-card {
+  max-width: 400px;
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.login-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.login-card input.form-control {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 10px 14px;
+}
+
+.login-card input.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+}
+
+.login-card .btn-primary {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.login-card a {
+  font-size: 0.9rem;
+  color: #0d6efd !important;
+}
+
+.bg-primary {
+  background: linear-gradient(180deg, #0d6efd 0%, #084298 100%);
+  animation: slideInRight 0.9s ease forwards;
+}
+
 .logo-login {
-  max-width: 120px;
+  width: 120px;
   height: auto;
+  margin-top: 1rem;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* RESPONSIVO */
+@media (max-width: 992px) {
+  .col-lg-9, .col-lg-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .bg-primary {
+    flex-direction: row;
+    padding: 1.5rem 0;
+  }
+
+  .login-card {
+    margin: 2rem auto;
+  }
 }
