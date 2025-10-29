@@ -1,0 +1,329 @@
+/* =====================
+   ESTILO GERAL
+===================== */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f9fafc;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+h1, h2, h5, h6 {
+  font-weight: 600;
+  color: #222;
+}
+
+/* =====================
+   NAVBAR
+===================== */
+.navbar {
+  background: linear-gradient(90deg, #0d6efd, #007bff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+}
+
+.nav-link {
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: #ffd43b !important;
+}
+
+.btn-warning {
+  color: #000;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.btn-warning:hover {
+  transform: scale(1.05);
+  background-color: #ffc107;
+}
+
+/* =====================
+   ANIMAÇÕES GERAIS
+===================== */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =====================
+   BANNER / HERO
+===================== */
+#carouselBanners {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.8s ease-in;
+}
+
+.carousel-inner img {
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+h5.fw-bold {
+  margin-top: 20px;
+  font-size: 1.4rem;
+  animation: fadeSlideUp 1s ease-in-out;
+}
+
+.btn-success {
+  border-radius: 25px;
+  padding: 10px 30px;
+  font-weight: 500;
+  transition: 0.3s ease;
+  animation: fadeSlideUp 1.2s ease-in-out;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* =====================
+   CATEGORIAS
+===================== */
+#cats-chips {
+  animation: fadeSlideUp 1s ease;
+}
+
+#cats-chips button {
+  background-color: #e9f1ff;
+  color: #0d6efd;
+  border: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#cats-chips button:hover,
+#cats-chips button.active {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
+  transform: translateY(-2px);
+}
+
+/* =====================
+   PRODUTOS / SERVIÇOS
+===================== */
+.service-card {
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeSlideUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+/* atraso suave para os cards entrarem em sequência */
+.service-card:nth-child(1) { animation-delay: 0.2s; }
+.service-card:nth-child(2) { animation-delay: 0.4s; }
+.service-card:nth-child(3) { animation-delay: 0.6s; }
+.service-card:nth-child(4) { animation-delay: 0.8s; }
+.service-card:nth-child(5) { animation-delay: 1s; }
+.service-card:nth-child(6) { animation-delay: 1.2s; }
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.service-card i {
+  color: #0d6efd;
+}
+
+.service-card .btn-dark {
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  transition: 0.3s ease;
+}
+
+.service-card .btn-dark:hover {
+  background-color: #0d6efd;
+  transform: scale(1.05);
+}
+
+/* =====================
+   SEÇÃO SOBRE NÓS
+===================== */
+.card.shadow-sm {
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  animation: fadeSlideUp 1.3s ease;
+}
+
+.card.shadow-sm h6 {
+  color: #0d6efd;
+  font-size: 1.1rem;
+}
+
+.card.shadow-sm p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* =====================
+   RODAPÉ (opcional futuro)
+===================== */
+footer {
+  background: #0d6efd;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+/* =====================
+   RESPONSIVIDADE
+===================== */
+@media (max-width: 768px) {
+  .navbar .btn-warning {
+    margin-top: 8px;
+  }
+
+  .service-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .service-card .btn-dark {
+    margin-top: 10px;
+  }
+
+  h5.fw-bold {
+    font-size: 1.2rem;
+  }
+}
+
+/* ====== CARROSSEL DE BANNERS ====== */
+#carouselBanners {
+  position: relative;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Cada item do carrossel */
+#carouselBanners .carousel-item {
+  height: 400px;
+  position: relative;
+}
+
+/* Imagens dentro do carrossel */
+#carouselBanners .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* preenche todo o banner sem distorcer */
+  display: block;
+  border-radius: 15px;
+}
+
+/* Texto sobreposto à direita (opcional, se você adicionar via JS) */
+#carouselBanners .carousel-item .banner-text {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  color: #fff;
+  text-align: right;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#carouselBanners .carousel-item .banner-text h5 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+#carouselBanners .carousel-item .banner-text .btn {
+  font-size: 1.1rem;
+  padding: 0.7rem 1.5rem;
+}
+
+/* Botões de navegação */
+#carouselBanners .carousel-control-prev,
+#carouselBanners .carousel-control-next {
+  width: 5%;
+}
+
+#carouselBanners .carousel-control-prev-icon,
+#carouselBanners .carousel-control-next-icon {
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.7));
+}
+
+/* Indicadores */
+#carouselBanners .carousel-indicators button {
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+#carouselBanners .carousel-indicators .active {
+  background-color: #0d6efd;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 992px) {
+  #carouselBanners .carousel-item {
+    height: 300px;
+  }
+  #carouselBanners .carousel-item .banner-text {
+    right: 2%;
+    padding: 15px;
+  }
+  #carouselBanners .carousel-item .banner-text h5 {
+    font-size: 1.4rem;
+  }
+  #carouselBanners .carousel-item .banner-text .btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #carouselBanners .carousel-item {
+    height: 200px;
+  }
+  #carouselBanners .carousel-item .banner-text {
+    position: static;
+    transform: none;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    margin: 10px;
+  }
+  #carouselBanners .carousel-item .banner-text h5 {
+    font-size: 1.2rem;
+  }
+}
+
